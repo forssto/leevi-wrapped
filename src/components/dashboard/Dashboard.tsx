@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { UserStats } from '@/types/database'
 import { User } from '@supabase/supabase-js'
@@ -17,11 +17,7 @@ export default function Dashboard({ user }: DashboardProps) {
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  useEffect(() => {
-    fetchUserStats()
-  }, [user])
-
-  const fetchUserStats = async () => {
+  const fetchUserStats = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -54,8 +50,8 @@ export default function Dashboard({ user }: DashboardProps) {
         .map(review => review.songs)
         .filter(Boolean)
 
-      const topSongs = sortedSongs.slice(0, 5)
-      const bottomSongs = sortedSongs.slice(-5).reverse()
+      const topSongs = sortedSongs.slice(0, 5) as unknown as UserStats['topSongs']
+      const bottomSongs = sortedSongs.slice(-5).reverse() as unknown as UserStats['bottomSongs']
 
       // Calculate rating distribution
       const ratingDistribution = reviews.reduce((acc, review) => {
@@ -78,7 +74,11 @@ export default function Dashboard({ user }: DashboardProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
+
+  useEffect(() => {
+    fetchUserStats()
+  }, [fetchUserStats])
 
   const slides = [
     {
@@ -157,7 +157,7 @@ export default function Dashboard({ user }: DashboardProps) {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-white mb-2">Your Leevi Wrapped</h1>
-          <p className="text-white/70">Welcome back, {user.name}!</p>
+          <p className="text-white/70">Welcome back, {user.email}!</p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">

@@ -1,7 +1,7 @@
-import { NextRequest, NextRequest as Request } from 'next/server'
+import { NextRequest } from 'next/server'
 import { ImageResponse } from '@vercel/og'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const name = searchParams.get('name')
   const totalReviews = searchParams.get('totalReviews')
@@ -40,7 +40,7 @@ export async function GET(request: Request) {
               margin: '0 0 20px 0',
             }}
           >
-            {name}'s Leevi Wrapped
+            {name}&apos;s Leevi Wrapped
           </h1>
           <div
             style={{

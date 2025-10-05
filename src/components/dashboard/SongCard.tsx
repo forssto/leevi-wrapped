@@ -38,7 +38,7 @@ export default function SongCard({ song, rating, rank, isTop = false }: SongCard
       
       {song.main_lines && (
         <div className="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 rounded-r-lg">
-          <p className="text-sm italic text-gray-700">"{song.main_lines}"</p>
+          <p className="text-sm italic text-gray-700">&ldquo;{song.main_lines}&rdquo;</p>
         </div>
       )}
       
