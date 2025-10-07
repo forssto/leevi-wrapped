@@ -27,6 +27,7 @@ interface TasteTwinCardProps {
 export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
   const [data, setData] = useState<TasteTwinData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,10 +38,13 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           console.log('Taste Twin API response:', result)
           setData(result)
         } else {
-          console.error('Taste Twin API response not ok:', response.status, response.statusText)
+          const errorData = await response.json()
+          console.error('Taste Twin API error:', response.status, errorData)
+          setError(errorData.error || 'Failed to fetch taste twin data')
         }
       } catch (error) {
         console.error('Error fetching taste twin data:', error)
+        setError('Network error while fetching taste twin data')
       } finally {
         setLoading(false)
       }
@@ -53,6 +57,17 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
     return (
       <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-white text-xl text-center">
+          <div className="text-red-400 mb-2">Error:</div>
+          <div>{error}</div>
+        </div>
       </div>
     )
   }

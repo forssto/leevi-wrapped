@@ -99,9 +99,13 @@ export async function GET(request: NextRequest) {
       // Find overlapping songs
       const overlappingSongs = userSongs.filter(songOrder => twinRatingsMap.has(songOrder))
       
-      if (overlappingSongs.length < 5) continue // Require minimum overlap (reduced from 10)
+      if (overlappingSongs.length < 3) {
+        console.log(`Skipping ${email}: only ${overlappingSongs.length} overlapping songs`)
+        continue // Require minimum overlap (reduced to 3 for small dataset)
+      }
       
       potentialTwins++
+      console.log(`Found potential twin ${email} with ${overlappingSongs.length} overlapping songs`)
 
       const userRatings = overlappingSongs.map(songOrder => userRatingsMap.get(songOrder)!)
       const twinRatings = overlappingSongs.map(songOrder => twinRatingsMap.get(songOrder)!)
