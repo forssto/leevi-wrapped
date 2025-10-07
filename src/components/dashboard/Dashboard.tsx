@@ -85,6 +85,20 @@ export default function Dashboard({ user }: DashboardProps) {
     fetchUserStats()
   }, [fetchUserStats])
 
+  // Add keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        setCurrentSlide(prev => Math.max(0, prev - 1))
+      } else if (event.key === 'ArrowRight') {
+        setCurrentSlide(prev => Math.min(slides.length - 1, prev + 1))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [slides.length])
+
   const slides = [
     {
       title: "Positivity Percentile",
@@ -186,6 +200,13 @@ export default function Dashboard({ user }: DashboardProps) {
         </motion.div>
 
         <div className="max-w-7xl mx-auto">
+          {/* Debug info */}
+          <div className="text-center mb-4">
+            <p className="text-white/60 text-sm">
+              Slide {currentSlide + 1} of {slides.length}: {slides[currentSlide]?.title}
+            </p>
+          </div>
+          
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0, x: 50 }}
@@ -210,21 +231,48 @@ export default function Dashboard({ user }: DashboardProps) {
             )}
           </motion.div>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center items-center gap-6">
             <button
-              onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+              onClick={() => {
+                console.log('Previous clicked, current slide:', currentSlide)
+                setCurrentSlide(Math.max(0, currentSlide - 1))
+              }}
               disabled={currentSlide === 0}
-              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Previous
+              ← Previous
             </button>
+            
+            {/* Slide indicator */}
+            <div className="flex gap-2">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentSlide ? 'bg-white' : 'bg-white/30'
+                  }`}
+                />
+              ))}
+            </div>
+            
             <button
-              onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+              onClick={() => {
+                console.log('Next clicked, current slide:', currentSlide)
+                setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))
+              }}
               disabled={currentSlide === slides.length - 1}
-              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next
+              Next →
             </button>
+          </div>
+          
+          {/* Keyboard hint */}
+          <div className="text-center mt-4">
+            <p className="text-white/60 text-sm">
+              Use ← → arrow keys or click to navigate
+            </p>
           </div>
         </div>
       </div>
