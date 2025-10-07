@@ -61,6 +61,9 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'No reviews found for user' }, { status: 404 })
     }
 
+    console.log(`User ${userEmail} has ${userRatingsMap.size} reviews`)
+    console.log(`Total users in database: ${userReviews.size}`)
+
     // Find songs that both user and potential twin have rated
     const userSongs = Array.from(userRatingsMap.keys())
     
@@ -89,13 +92,16 @@ export async function GET(request: NextRequest) {
     })
 
     // Find correlations with other users
+    let potentialTwins = 0
     for (const [email, twinRatingsMap] of userReviews) {
       if (email === userEmail) continue
 
       // Find overlapping songs
       const overlappingSongs = userSongs.filter(songOrder => twinRatingsMap.has(songOrder))
       
-      if (overlappingSongs.length < 10) continue // Require minimum overlap
+      if (overlappingSongs.length < 5) continue // Require minimum overlap (reduced from 10)
+      
+      potentialTwins++
 
       const userRatings = overlappingSongs.map(songOrder => userRatingsMap.get(songOrder)!)
       const twinRatings = overlappingSongs.map(songOrder => twinRatingsMap.get(songOrder)!)
@@ -113,7 +119,7 @@ export async function GET(request: NextRequest) {
           const avgDelta = (userDelta + twinDelta) / 2
 
           const review = allReviews.find(r => r.song_order === songOrder)
-          const trackName = review?.songs ? (review.songs as { track_name: string }[])[0]?.track_name : 'Unknown Song'
+          const trackName = review?.songs ? (review.songs as { track_name: string }).track_name : 'Unknown Song'
           
           return {
             song_order: songOrder,
@@ -139,6 +145,9 @@ export async function GET(request: NextRequest) {
         alignedHotTakes: hotTakes
       })
     }
+
+    console.log(`Found ${potentialTwins} potential twins with >= 5 overlapping songs`)
+    console.log(`Calculated correlations for ${correlations.length} users`)
 
     // Sort by correlation and overlap count
     correlations.sort((a, b) => {
