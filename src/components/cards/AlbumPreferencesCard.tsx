@@ -29,7 +29,10 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
         const response = await fetch(`/api/cards/album-preferences?email=${encodeURIComponent(userEmail)}`)
         if (response.ok) {
           const result = await response.json()
+          console.log('Album Preferences API response:', result)
           setData(result)
+        } else {
+          console.error('Album Preferences API response not ok:', response.status, response.statusText)
         }
       } catch (error) {
         console.error('Error fetching album preferences data:', error)
@@ -106,7 +109,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-6xl font-bold text-green-400 mb-4">
-              {data.fav_album_user_avg.toFixed(2)}
+              {data.fav_album_user_avg?.toFixed(2) || '0.00'}
             </div>
             
             <div className="text-white/80 mb-4">
@@ -147,7 +150,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-6xl font-bold text-red-400 mb-4">
-              {data.worst_album_user_avg.toFixed(2)}
+              {data.worst_album_user_avg?.toFixed(2) || '0.00'}
             </div>
             
             <div className="text-white/80 mb-4">
@@ -171,7 +174,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
         >
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
-              {(data.fav_album_user_avg - data.worst_album_user_avg).toFixed(2)}
+              {((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0)).toFixed(2)}
             </div>
             <div className="text-white/80">
               Rating Difference

@@ -29,7 +29,10 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
         const response = await fetch(`/api/cards/positivity-percentile?email=${encodeURIComponent(userEmail)}`)
         if (response.ok) {
           const result = await response.json()
+          console.log('Positivity Percentile API response:', result)
           setData(result)
+        } else {
+          console.error('API response not ok:', response.status, response.statusText)
         }
       } catch (error) {
         console.error('Error fetching positivity percentile data:', error)
@@ -104,7 +107,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className="text-8xl font-bold text-white mb-4">
-            {data.user_avg.toFixed(2)}
+            {data.user_avg?.toFixed(2) || '0.00'}
           </div>
           <div className="text-2xl text-white/80 mb-2">
             Your Average Rating
@@ -133,7 +136,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
         >
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-3xl font-bold text-white mb-2">
-              {data.all_avg.toFixed(2)}
+              {data.all_avg?.toFixed(2) || '0.00'}
             </div>
             <div className="text-white/80">
               Overall Average
@@ -142,7 +145,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-3xl font-bold text-white mb-2">
-              {data.all_percentile.toFixed(0)}%
+              {data.all_percentile?.toFixed(0) || '0'}%
             </div>
             <div className="text-white/80">
               Percentile Rank
@@ -161,19 +164,19 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
             {data.cohort_percentiles.gender && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Gender: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.gender.toFixed(0)}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.gender?.toFixed(0) || '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.decade && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Decade: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.decade.toFixed(0)}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.decade?.toFixed(0) || '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.city && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">City: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.city.toFixed(0)}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.city?.toFixed(0) || '0'}%</span>
               </div>
             )}
           </motion.div>
