@@ -2,7 +2,8 @@
 -- Run this in your Supabase SQL editor
 
 -- 1) Crowd average per song
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_crowd_song_avg AS
+DROP MATERIALIZED VIEW IF EXISTS mv_crowd_song_avg;
+CREATE MATERIALIZED VIEW mv_crowd_song_avg AS
 SELECT 
     song_order, 
     AVG(rating)::numeric(5,2) as crowd_avg,
@@ -11,7 +12,8 @@ FROM reviews
 GROUP BY song_order;
 
 -- 2) Crowd rank per song
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_crowd_song_rank AS
+DROP MATERIALIZED VIEW IF EXISTS mv_crowd_song_rank;
+CREATE MATERIALIZED VIEW mv_crowd_song_rank AS
 SELECT 
     song_order,
     crowd_avg,
@@ -19,7 +21,8 @@ SELECT
 FROM mv_crowd_song_avg;
 
 -- 3) Per-user album averages (for Album Superfan/Nemesis)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_album_avg AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_album_avg;
+CREATE MATERIALIZED VIEW mv_user_album_avg AS
 SELECT 
     r.participant_email as email, 
     s.album, 
@@ -30,7 +33,8 @@ JOIN songs s USING (song_order)
 GROUP BY r.participant_email, s.album;
 
 -- 4) Per-user overall average (for Positivity Percentile)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_avg AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_avg;
+CREATE MATERIALIZED VIEW mv_user_avg AS
 SELECT 
     participant_email as email, 
     AVG(rating)::numeric(5,2) as user_avg,
@@ -40,7 +44,8 @@ FROM reviews
 GROUP BY participant_email;
 
 -- 5) Cohort sizes (for privacy - only show cohorts with enough members)
-CREATE VIEW IF NOT EXISTS v_cohort_sizes AS
+DROP VIEW IF EXISTS v_cohort_sizes;
+CREATE VIEW v_cohort_sizes AS
 SELECT 
     gender, 
     decade,
@@ -51,7 +56,8 @@ WHERE done = true
 GROUP BY gender, decade, city;
 
 -- 6) User review timing data (for Cadence Archetype)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_review_timing AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_review_timing;
+CREATE MATERIALIZED VIEW mv_user_review_timing AS
 SELECT 
     r.participant_email as email,
     r.song_order,
@@ -65,7 +71,8 @@ FROM reviews r
 JOIN songs s USING (song_order);
 
 -- 7) User theme correlations (for Theme Affinities)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_theme_stats AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_theme_stats;
+CREATE MATERIALIZED VIEW mv_user_theme_stats AS
 SELECT 
     r.participant_email as email,
     AVG(r.rating) as user_avg_rating,
@@ -82,7 +89,8 @@ JOIN songs s USING (song_order)
 GROUP BY r.participant_email;
 
 -- 8) User era preferences (for Era Bias)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_era_stats AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_era_stats;
+CREATE MATERIALIZED VIEW mv_user_era_stats AS
 SELECT 
     r.participant_email as email,
     (s.year/10)*10 as decade,
@@ -93,7 +101,8 @@ JOIN songs s USING (song_order)
 GROUP BY r.participant_email, (s.year/10)*10;
 
 -- 9) User popularity correlation (for Popularity Reversal)
-CREATE MATERIALIZED VIEW IF NOT EXISTS mv_user_popularity_stats AS
+DROP MATERIALIZED VIEW IF EXISTS mv_user_popularity_stats;
+CREATE MATERIALIZED VIEW mv_user_popularity_stats AS
 SELECT 
     r.participant_email as email,
     CORR(r.rating, (-1.0)*s.lastfm_pos) as corr_popularity,
@@ -114,8 +123,15 @@ CREATE INDEX IF NOT EXISTS idx_mv_user_popularity_stats_email ON mv_user_popular
 
 -- Grant permissions
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon, authenticated;
-GRANT SELECT ON ALL MATERIALIZED VIEWS IN SCHEMA public TO anon, authenticated;
-GRANT SELECT ON ALL VIEWS IN SCHEMA public TO anon, authenticated;
+GRANT SELECT ON mv_crowd_song_avg TO anon, authenticated;
+GRANT SELECT ON mv_crowd_song_rank TO anon, authenticated;
+GRANT SELECT ON mv_user_album_avg TO anon, authenticated;
+GRANT SELECT ON mv_user_avg TO anon, authenticated;
+GRANT SELECT ON mv_user_review_timing TO anon, authenticated;
+GRANT SELECT ON mv_user_theme_stats TO anon, authenticated;
+GRANT SELECT ON mv_user_era_stats TO anon, authenticated;
+GRANT SELECT ON mv_user_popularity_stats TO anon, authenticated;
+GRANT SELECT ON v_cohort_sizes TO anon, authenticated;
 
 -- Refresh function for materialized views
 CREATE OR REPLACE FUNCTION refresh_wrapped_views()

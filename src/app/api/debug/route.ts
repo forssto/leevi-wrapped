@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
+// Debug route for environment variables
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   return Response.json({
     hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
     hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 interface AlbumPreferencesData {
   fav_album: string
@@ -90,9 +91,11 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             {/* Album Cover */}
             {data.fav_album_cover && (
               <div className="mb-6">
-                <img 
+                <Image 
                   src={`/levynkannet/${data.fav_album_cover}`}
                   alt={data.fav_album}
+                  width={128}
+                  height={128}
                   className="w-32 h-32 mx-auto rounded-lg shadow-lg"
                 />
               </div>
@@ -129,9 +132,11 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             {/* Album Cover */}
             {data.worst_album_cover && (
               <div className="mb-6">
-                <img 
+                <Image 
                   src={`/levynkannet/${data.worst_album_cover}`}
                   alt={data.worst_album}
+                  width={128}
+                  height={128}
                   className="w-32 h-32 mx-auto rounded-lg shadow-lg opacity-60"
                 />
               </div>

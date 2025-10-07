@@ -22,7 +22,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Get overall average
-    const { data: allStats, error: allError } = await supabase
+    let allStats: { overall_avg: number } | null = null
+    const { data: allStatsData, error: allError } = await supabase
       .rpc('get_overall_average')
 
     if (allError) {
@@ -37,6 +38,8 @@ export async function GET(request: NextRequest) {
       
       const allAvg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
       allStats = { overall_avg: allAvg }
+    } else {
+      allStats = allStatsData
     }
 
     // Get user's percentile rank
@@ -90,7 +93,7 @@ export async function GET(request: NextRequest) {
     return Response.json({
       user_avg: parseFloat(userStats.user_avg),
       total_reviews: userStats.total_reviews,
-      all_avg: parseFloat(allStats.overall_avg),
+      all_avg: allStats ? parseFloat(allStats.overall_avg) : 0,
       all_percentile: percentileData?.percentile || 0,
       cohort_percentiles: cohortPercentiles
     })
