@@ -1,11 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
-import { UserStats } from '@/types/database'
+import { useState, useEffect } from 'react'
 import { User } from '@supabase/supabase-js'
-import StatsCard from './StatsCard'
-import SongCard from './SongCard'
 import PositivityPercentileCard from '../cards/PositivityPercentileCard'
 import AlbumPreferencesCard from '../cards/AlbumPreferencesCard'
 import TasteTwinCard from '../cards/TasteTwinCard'
@@ -18,72 +14,8 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ user }: DashboardProps) {
-  const [userStats, setUserStats] = useState<UserStats | null>(null)
-  const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const fetchUserStats = useCallback(async () => {
-    try {
-      setLoading(true)
-      
-      // Fetch user's reviews
-      const { data: reviews, error: reviewsError } = await supabase
-        .from('reviews')
-        .select(`
-          rating,
-          song_order,
-          songs (
-            song_order,
-            track_name,
-            album,
-            year,
-            main_lines,
-            tags_adjective
-          )
-        `)
-        .eq('participant_email', user.email)
-
-      if (reviewsError) throw reviewsError
-
-      // Calculate stats
-      const totalReviews = reviews.length
-      const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
-      
-      // Sort songs by rating
-      const sortedSongs = reviews
-        .sort((a, b) => b.rating - a.rating)
-        .map(review => review.songs)
-        .filter(Boolean)
-
-      const topSongs = sortedSongs.slice(0, 5) as unknown as UserStats['topSongs']
-      const bottomSongs = sortedSongs.slice(-5).reverse() as unknown as UserStats['bottomSongs']
-
-      // Calculate rating distribution
-      const ratingDistribution = reviews.reduce((acc, review) => {
-        const range = Math.floor(review.rating)
-        acc[range] = (acc[range] || 0) + 1
-        return acc
-      }, {} as Record<string, number>)
-
-      setUserStats({
-        totalReviews,
-        averageRating,
-        topSongs,
-        bottomSongs,
-        favoriteDecade: '1990s', // This would need to be calculated from actual data
-        ratingDistribution,
-        participationLevel: totalReviews > 100 ? 'High' : totalReviews > 50 ? 'Medium' : 'Low'
-      })
-    } catch (error) {
-      console.error('Error fetching user stats:', error)
-    } finally {
-      setLoading(false)
-    }
-  }, [user])
-
-  useEffect(() => {
-    fetchUserStats()
-  }, [fetchUserStats])
 
   const slides = [
     {
@@ -105,63 +37,6 @@ export default function Dashboard({ user }: DashboardProps) {
     {
       title: "Era Bias",
       content: <EraBiasCard userEmail={user.email || ''} />
-    },
-    {
-      title: "Your Leevi Journey",
-      content: (
-        <div className="grid grid-cols-2 gap-4">
-          <StatsCard
-            title="Total Reviews"
-            value={userStats?.totalReviews || 0}
-            subtitle="Songs rated"
-            icon="🎵"
-            color="blue"
-          />
-          <StatsCard
-            title="Average Rating"
-            value={userStats?.averageRating?.toFixed(2) || '0.00'}
-            subtitle="Out of 10"
-            icon="⭐"
-            color="green"
-          />
-        </div>
-      )
-    },
-    {
-      title: "Your Top Songs",
-      content: (
-        <div className="space-y-4">
-          {userStats?.topSongs.slice(0, 3).map((song, index) => (
-            <SongCard
-              key={song.song_order}
-              song={song}
-              rank={index + 1}
-              isTop={index === 0}
-            />
-          ))}
-        </div>
-      )
-    },
-    {
-      title: "Your Rating Style",
-      content: (
-        <div className="grid grid-cols-2 gap-4">
-          <StatsCard
-            title="Participation Level"
-            value={userStats?.participationLevel || 'Low'}
-            subtitle="How active you were"
-            icon="🔥"
-            color="orange"
-          />
-          <StatsCard
-            title="Favorite Decade"
-            value={userStats?.favoriteDecade || '1990s'}
-            subtitle="Based on your ratings"
-            icon="📅"
-            color="purple"
-          />
-        </div>
-      )
     }
   ]
 
@@ -179,13 +54,6 @@ export default function Dashboard({ user }: DashboardProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [slides.length])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading your Leevi Wrapped...</div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
@@ -213,22 +81,9 @@ export default function Dashboard({ user }: DashboardProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
-            className={`${
-              currentSlide < 5 
-                ? 'w-full h-[80vh]' 
-                : 'bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8'
-            }`}
+            className="w-full h-[80vh]"
           >
-            {currentSlide < 5 ? (
-              slides[currentSlide].content
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold text-white mb-6 text-center">
-                  {slides[currentSlide].title}
-                </h2>
-                {slides[currentSlide].content}
-              </>
-            )}
+            {slides[currentSlide].content}
           </motion.div>
 
           {/* Navigation - Fixed at bottom with high z-index */}
