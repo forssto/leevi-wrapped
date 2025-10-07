@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     allReviews.forEach(review => {
       const songOrder = review.song_order
-      const trackName = (review.songs as any).track_name
+      const trackName = (review.songs as { track_name: string }).track_name
       
       if (!crowdAverages.has(songOrder)) {
         crowdAverages.set(songOrder, 0)
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
 
       return {
         song_order: review.song_order,
-        track_name: (review.songs as any).track_name,
+        track_name: (review.songs as { track_name: string }).track_name,
         user_rating: review.rating,
         crowd_avg: crowdAvg,
         delta: delta,

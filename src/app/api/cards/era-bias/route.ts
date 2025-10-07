@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const decadeRatings = new Map<number, number[]>()
     
     userReviews.forEach(review => {
-      const year = (review.songs as any).year
+      const year = (review.songs as { year: number }).year
       const decade = Math.floor(year / 10) * 10
       
       if (!decadeRatings.has(decade)) {
