@@ -27,20 +27,31 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Email required' }, { status: 400 })
     }
 
-    // Get all reviews with song information
+    // Get all reviews
     const { data: allReviews, error: reviewsError } = await supabase
       .from('reviews')
-      .select(`
-        participant_email,
-        song_order,
-        rating,
-        songs(track_name)
-      `)
+      .select('participant_email, song_order, rating')
 
     if (reviewsError) {
       console.error('Error getting reviews:', reviewsError)
       return Response.json({ error: 'Failed to get reviews' }, { status: 500 })
     }
+
+    // Get song names separately
+    const { data: songs, error: songsError } = await supabase
+      .from('songs')
+      .select('song_order, track_name')
+
+    if (songsError) {
+      console.error('Error getting songs:', songsError)
+      return Response.json({ error: 'Failed to get songs' }, { status: 500 })
+    }
+
+    // Create a map of song_order to track_name
+    const songNames = new Map()
+    songs.forEach(song => {
+      songNames.set(song.song_order, song.track_name)
+    })
 
     // Group reviews by user and song
     const userReviews = new Map<string, Map<number, number>>()
@@ -122,8 +133,7 @@ export async function GET(request: NextRequest) {
           const twinDelta = twinRating - crowdAvg
           const avgDelta = (userDelta + twinDelta) / 2
 
-          const review = allReviews.find(r => r.song_order === songOrder)
-          const trackName = review?.songs ? (review.songs as { track_name: string }).track_name : 'Unknown Song'
+          const trackName = songNames.get(songOrder) || 'Unknown Song'
           
           return {
             song_order: songOrder,
