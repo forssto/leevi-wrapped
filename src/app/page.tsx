@@ -14,10 +14,16 @@ export default function HomePage() {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        console.log('Checking user authentication...')
+        const { data: { user }, error } = await supabase.auth.getUser()
+        console.log('User check result:', { user, error })
+        
         setUser(user)
         if (user) {
+          console.log('User found, redirecting to dashboard...')
           router.push('/dashboard')
+        } else {
+          console.log('No user found')
         }
       } catch (error) {
         console.error('Error checking user:', error)
@@ -30,8 +36,10 @@ export default function HomePage() {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state change:', event, session)
       setUser(session?.user || null)
       if (session?.user) {
+        console.log('Auth change: User found, redirecting to dashboard...')
         router.push('/dashboard')
       }
     })
