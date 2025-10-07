@@ -8,6 +8,9 @@ import StatsCard from './StatsCard'
 import SongCard from './SongCard'
 import PositivityPercentileCard from '../cards/PositivityPercentileCard'
 import AlbumPreferencesCard from '../cards/AlbumPreferencesCard'
+import TasteTwinCard from '../cards/TasteTwinCard'
+import HotTakeIndexCard from '../cards/HotTakeIndexCard'
+import EraBiasCard from '../cards/EraBiasCard'
 import { motion } from 'framer-motion'
 
 interface DashboardProps {
@@ -90,6 +93,18 @@ export default function Dashboard({ user }: DashboardProps) {
     {
       title: "Album Superfan & Nemesis",
       content: <AlbumPreferencesCard userEmail={user.email || ''} />
+    },
+    {
+      title: "Taste Twin Found!",
+      content: <TasteTwinCard userEmail={user.email || ''} />
+    },
+    {
+      title: "Hot Take Index",
+      content: <HotTakeIndexCard userEmail={user.email || ''} />
+    },
+    {
+      title: "Era Bias",
+      content: <EraBiasCard userEmail={user.email || ''} />
     },
     {
       title: "Your Leevi Journey",
@@ -178,12 +193,12 @@ export default function Dashboard({ user }: DashboardProps) {
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
             className={`${
-              currentSlide < 2 
+              currentSlide < 5 
                 ? 'w-full h-[80vh]' 
                 : 'bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8'
             }`}
           >
-            {currentSlide < 2 ? (
+            {currentSlide < 5 ? (
               slides[currentSlide].content
             ) : (
               <>
