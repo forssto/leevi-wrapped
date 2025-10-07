@@ -21,12 +21,15 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'User not found' }, { status: 404 })
     }
 
-    // Get overall average
-    let allStats: { overall_avg: number } | null = null
+    // Get overall average using SQL function
     const { data: allStatsData, error: allError } = await supabase
       .rpc('get_overall_average')
 
+    console.log('Overall average result:', { allStatsData, allError })
+
+    let allAvg = 0
     if (allError) {
+      console.error('Error getting overall average:', allError)
       // Fallback: calculate from reviews table
       const { data: reviews, error: reviewsError } = await supabase
         .from('reviews')
@@ -36,18 +39,22 @@ export async function GET(request: NextRequest) {
         return Response.json({ error: 'Failed to get overall stats' }, { status: 500 })
       }
       
-      const allAvg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-      allStats = { overall_avg: allAvg }
+      allAvg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
     } else {
-      allStats = allStatsData
+      allAvg = allStatsData?.[0]?.overall_avg || 0
     }
 
-    // Get user's percentile rank
+    // Get user's percentile rank using SQL function
     const { data: percentileData, error: percentileError } = await supabase
       .rpc('get_user_percentile', { user_email: userEmail })
 
+    console.log('Percentile result:', { percentileData, percentileError })
+
+    let percentile = 0
     if (percentileError) {
-      return Response.json({ error: 'Failed to calculate percentile' }, { status: 500 })
+      console.error('Error getting percentile:', percentileError)
+    } else {
+      percentile = percentileData?.[0]?.percentile || 0
     }
 
     // Get cohort percentiles (only for cohorts with enough members)
@@ -93,8 +100,8 @@ export async function GET(request: NextRequest) {
     return Response.json({
       user_avg: parseFloat(userStats.user_avg),
       total_reviews: userStats.total_reviews,
-      all_avg: allStats ? allStats.overall_avg : 0,
-      all_percentile: percentileData?.percentile || 0,
+      all_avg: allAvg,
+      all_percentile: percentile,
       cohort_percentiles: cohortPercentiles
     })
 

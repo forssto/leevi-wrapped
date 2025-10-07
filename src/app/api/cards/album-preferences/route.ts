@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
     const { data: albumData, error: albumError } = await supabase
       .rpc('get_album_preferences', { user_email: userEmail })
 
+    console.log('Album preferences result:', { albumData, albumError })
+
     if (albumError) {
       console.error('Error getting album preferences:', albumError)
       return Response.json({ error: 'Failed to get album preferences' }, { status: 500 })
