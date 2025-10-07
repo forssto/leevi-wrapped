@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
     return Response.json({
       user_avg: parseFloat(userStats.user_avg),
       total_reviews: userStats.total_reviews,
-      all_avg: allStats ? parseFloat(allStats.overall_avg) : 0,
+      all_avg: allStats ? allStats.overall_avg : 0,
       all_percentile: percentileData?.percentile || 0,
       cohort_percentiles: cohortPercentiles
     })

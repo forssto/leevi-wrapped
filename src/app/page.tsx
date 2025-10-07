@@ -3,11 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { User } from '@supabase/supabase-js'
 import LoginButton from '@/components/auth/LoginButton'
 
 export default function HomePage() {
-  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -18,7 +16,6 @@ export default function HomePage() {
         const { data: { user }, error } = await supabase.auth.getUser()
         console.log('User check result:', { user, error })
         
-        setUser(user)
         if (user) {
           console.log('User found, redirecting to dashboard...')
           router.push('/dashboard')
@@ -37,7 +34,6 @@ export default function HomePage() {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth state change:', event, session)
-      setUser(session?.user || null)
       if (session?.user) {
         console.log('Auth change: User found, redirecting to dashboard...')
         router.push('/dashboard')
