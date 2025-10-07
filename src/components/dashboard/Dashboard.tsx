@@ -231,48 +231,51 @@ export default function Dashboard({ user }: DashboardProps) {
             )}
           </motion.div>
 
-          <div className="flex justify-center items-center gap-6">
-            <button
-              onClick={() => {
-                console.log('Previous clicked, current slide:', currentSlide)
-                setCurrentSlide(Math.max(0, currentSlide - 1))
-              }}
-              disabled={currentSlide === 0}
-              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              ← Previous
-            </button>
-            
-            {/* Slide indicator */}
-            <div className="flex gap-2">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide ? 'bg-white' : 'bg-white/30'
-                  }`}
-                />
-              ))}
+          {/* Navigation - Fixed at bottom with high z-index */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="flex justify-center items-center gap-6 bg-black/30 backdrop-blur-lg rounded-2xl px-6 py-4">
+              <button
+                onClick={() => {
+                  console.log('Previous clicked, current slide:', currentSlide)
+                  setCurrentSlide(Math.max(0, currentSlide - 1))
+                }}
+                disabled={currentSlide === 0}
+                className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ← Previous
+              </button>
+              
+              {/* Slide indicator */}
+              <div className="flex gap-2">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentSlide ? 'bg-white' : 'bg-white/30'
+                    }`}
+                  />
+                ))}
+              </div>
+              
+              <button
+                onClick={() => {
+                  console.log('Next clicked, current slide:', currentSlide)
+                  setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))
+                }}
+                disabled={currentSlide === slides.length - 1}
+                className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next →
+              </button>
             </div>
             
-            <button
-              onClick={() => {
-                console.log('Next clicked, current slide:', currentSlide)
-                setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))
-              }}
-              disabled={currentSlide === slides.length - 1}
-              className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next →
-            </button>
-          </div>
-          
-          {/* Keyboard hint */}
-          <div className="text-center mt-4">
-            <p className="text-white/60 text-sm">
-              Use ← → arrow keys or click to navigate
-            </p>
+            {/* Keyboard hint */}
+            <div className="text-center mt-2">
+              <p className="text-white/60 text-sm">
+                Use ← → arrow keys or click to navigate
+              </p>
+            </div>
           </div>
         </div>
       </div>
