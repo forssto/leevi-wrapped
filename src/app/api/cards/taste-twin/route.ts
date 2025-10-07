@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
 
           return {
             song_order: songOrder,
-            track_name: allReviews.find(r => r.song_order === songOrder)?.songs?.track_name || '',
+            track_name: (allReviews.find(r => r.song_order === songOrder)?.songs as { track_name: string }[])?.[0]?.track_name || '',
             user_rating: userRating,
             twin_rating: twinRating,
             crowd_avg: crowdAvg,
