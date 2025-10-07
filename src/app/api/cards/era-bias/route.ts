@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       .from('reviews')
       .select(`
         rating,
-        songs!inner(year)
+        songs(year)
       `)
       .eq('participant_email', userEmail)
 

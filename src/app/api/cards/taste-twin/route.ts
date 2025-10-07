@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         participant_email,
         song_order,
         rating,
-        songs!inner(track_name)
+        songs(track_name)
       `)
 
     if (reviewsError) {
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
       // Find overlapping songs
       const overlappingSongs = userSongs.filter(songOrder => twinRatingsMap.has(songOrder))
       
-      if (overlappingSongs.length < 40) continue // Require minimum overlap
+      if (overlappingSongs.length < 10) continue // Require minimum overlap
 
       const userRatings = overlappingSongs.map(songOrder => userRatingsMap.get(songOrder)!)
       const twinRatings = overlappingSongs.map(songOrder => twinRatingsMap.get(songOrder)!)
@@ -112,9 +112,12 @@ export async function GET(request: NextRequest) {
           const twinDelta = twinRating - crowdAvg
           const avgDelta = (userDelta + twinDelta) / 2
 
+          const review = allReviews.find(r => r.song_order === songOrder)
+          const trackName = review?.songs ? (review.songs as { track_name: string }[])[0]?.track_name : 'Unknown Song'
+          
           return {
             song_order: songOrder,
-            track_name: (allReviews.find(r => r.song_order === songOrder)?.songs as { track_name: string }[])?.[0]?.track_name || '',
+            track_name: trackName || 'Unknown Song',
             user_rating: userRating,
             twin_rating: twinRating,
             crowd_avg: crowdAvg,

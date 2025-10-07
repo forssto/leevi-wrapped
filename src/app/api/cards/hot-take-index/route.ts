@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       .select(`
         song_order,
         rating,
-        songs!inner(track_name)
+        songs(track_name)
       `)
 
     if (reviewsError) {
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       .select(`
         song_order,
         rating,
-        songs!inner(track_name)
+        songs(track_name)
       `)
       .eq('participant_email', userEmail)
 
