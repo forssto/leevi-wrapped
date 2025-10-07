@@ -6,6 +6,8 @@ import { UserStats } from '@/types/database'
 import { User } from '@supabase/supabase-js'
 import StatsCard from './StatsCard'
 import SongCard from './SongCard'
+import PositivityPercentileCard from '../cards/PositivityPercentileCard'
+import AlbumPreferencesCard from '../cards/AlbumPreferencesCard'
 import { motion } from 'framer-motion'
 
 interface DashboardProps {
@@ -81,6 +83,14 @@ export default function Dashboard({ user }: DashboardProps) {
   }, [fetchUserStats])
 
   const slides = [
+    {
+      title: "Positivity Percentile",
+      content: <PositivityPercentileCard userEmail={user.email || ''} />
+    },
+    {
+      title: "Album Superfan & Nemesis",
+      content: <AlbumPreferencesCard userEmail={user.email || ''} />
+    },
     {
       title: "Your Leevi Journey",
       content: (
@@ -160,19 +170,29 @@ export default function Dashboard({ user }: DashboardProps) {
           <p className="text-white/70">Welcome back, {user.email}!</p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
-            className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8"
+            className={`${
+              currentSlide < 2 
+                ? 'w-full h-[80vh]' 
+                : 'bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8'
+            }`}
           >
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">
-              {slides[currentSlide].title}
-            </h2>
-            {slides[currentSlide].content}
+            {currentSlide < 2 ? (
+              slides[currentSlide].content
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-white mb-6 text-center">
+                  {slides[currentSlide].title}
+                </h2>
+                {slides[currentSlide].content}
+              </>
+            )}
           </motion.div>
 
           <div className="flex justify-center gap-4">
