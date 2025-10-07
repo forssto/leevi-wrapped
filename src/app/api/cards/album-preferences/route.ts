@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { getAlbumCover } from '@/lib/albumCovers'
 
 export async function GET(request: NextRequest) {
   try {
@@ -27,32 +28,7 @@ export async function GET(request: NextRequest) {
 
     const result = albumData[0]
 
-    // Get album cover images (if available)
-    const getAlbumCover = (albumName: string) => {
-      // Map album names to cover image filenames
-      const albumCoverMap: Record<string, string> = {
-        'bulebule': 'bulebule.jpg',
-        'hantakoipienvalissa': 'hantakoipienvalissa.jpg',
-        'hopeahaapaiva': 'hopeahaapaiva.jpg',
-        'kaarmenayttely': 'kaarmenayttely.jpg',
-        'kadonnutlaakso': 'kadonnutlaakso.jpg',
-        'kerranelamassa': 'kerranelamassa.jpg',
-        'keskiviikko': 'keskiviikko.jpg',
-        'miesjokatoirocknrollinsuomeen': 'miesjokatoirocknrollinsuomeen.jpg',
-        'musiikkiluokka': 'musiikkiluokka.jpg',
-        'onnenavaimet': 'onnenavaimet.jpg',
-        'perjantai14paiva': 'perjantai14paiva.jpg',
-        'rahajarakkaus': 'rahajarakkaus.jpg',
-        'rakkaudenplaneetta': 'rakkaudenplaneetta.jpg',
-        'raparperitaivas': 'raparperitaivas.jpg',
-        'single': 'single.jpg',
-        'suuteleminenkielletty': 'suuteleminenkielletty.jpg',
-        'turkmenialainentyttoystava': 'turkmenialainentyttoystava.jpg',
-        'varastelevajoulupukki': 'varastelevajoulupukki.jpg'
-      }
-      
-      return albumCoverMap[albumName.toLowerCase()] || null
-    }
+    // Album cover images are now handled by the imported getAlbumCover function
 
     return Response.json({
       fav_album: result.fav_album,

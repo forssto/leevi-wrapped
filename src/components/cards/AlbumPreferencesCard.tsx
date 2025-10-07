@@ -95,7 +95,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             {data.fav_album_cover && (
               <div className="mb-6">
                 <Image 
-                  src={`/levynkannet/${data.fav_album_cover}`}
+                  src={data.fav_album_cover}
                   alt={data.fav_album}
                   width={128}
                   height={128}
@@ -136,7 +136,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             {data.worst_album_cover && (
               <div className="mb-6">
                 <Image 
-                  src={`/levynkannet/${data.worst_album_cover}`}
+                  src={data.worst_album_cover}
                   alt={data.worst_album}
                   width={128}
                   height={128}
