@@ -85,20 +85,6 @@ export default function Dashboard({ user }: DashboardProps) {
     fetchUserStats()
   }, [fetchUserStats])
 
-  // Add keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') {
-        setCurrentSlide(prev => Math.max(0, prev - 1))
-      } else if (event.key === 'ArrowRight') {
-        setCurrentSlide(prev => Math.min(slides.length - 1, prev + 1))
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [slides.length])
-
   const slides = [
     {
       title: "Positivity Percentile",
@@ -178,6 +164,20 @@ export default function Dashboard({ user }: DashboardProps) {
       )
     }
   ]
+
+  // Add keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        setCurrentSlide(prev => Math.max(0, prev - 1))
+      } else if (event.key === 'ArrowRight') {
+        setCurrentSlide(prev => Math.min(slides.length - 1, prev + 1))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [slides.length])
 
   if (loading) {
     return (
