@@ -13,6 +13,8 @@ interface PositivityPercentileData {
     gender?: number
     decade?: number
     city?: number
+    works_in_music?: number
+    plays_music?: number
   }
 }
 
@@ -136,7 +138,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
         </motion.div>
 
         {/* Cohort Percentiles */}
-        {(data.cohort_percentiles.gender || data.cohort_percentiles.decade || data.cohort_percentiles.city) && (
+        {(data.cohort_percentiles.gender || data.cohort_percentiles.decade || data.cohort_percentiles.city || data.cohort_percentiles.works_in_music || data.cohort_percentiles.plays_music) && (
           <motion.div 
             className="flex flex-wrap justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
@@ -145,20 +147,32 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           >
             {data.cohort_percentiles.gender && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Gender: </span>
+                <span className="text-white/80 text-sm">Same Gender: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.gender ? formatFinnishNumber(data.cohort_percentiles.gender, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.decade && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Decade: </span>
+                <span className="text-white/80 text-sm">Same Decade: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.decade ? formatFinnishNumber(data.cohort_percentiles.decade, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.city && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">City: </span>
+                <span className="text-white/80 text-sm">Same City: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.city ? formatFinnishNumber(data.cohort_percentiles.city, 0) : '0'}%</span>
+              </div>
+            )}
+            {data.cohort_percentiles.works_in_music && (
+              <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
+                <span className="text-white/80 text-sm">Music Workers: </span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.works_in_music ? formatFinnishNumber(data.cohort_percentiles.works_in_music, 0) : '0'}%</span>
+              </div>
+            )}
+            {data.cohort_percentiles.plays_music && (
+              <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
+                <span className="text-white/80 text-sm">Musicians: </span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.plays_music ? formatFinnishNumber(data.cohort_percentiles.plays_music, 0) : '0'}%</span>
               </div>
             )}
           </motion.div>

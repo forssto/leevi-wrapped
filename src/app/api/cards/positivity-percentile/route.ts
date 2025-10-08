@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     // Get cohort percentiles (only for cohorts with enough members)
     const { data: cohortStats, error: cohortError } = await supabase
       .from('participants')
-      .select('gender, decade, city')
+      .select('gender, decade, city, works_in_music, plays_music')
       .eq('email', userEmail)
       .single()
 
@@ -90,10 +90,36 @@ export async function GET(request: NextRequest) {
           cohort_value: cohortStats.city
         })
 
+      // Get musician comparisons
+      let worksInMusicPercentile = null
+      let playsMusicPercentile = null
+      
+      if (cohortStats.works_in_music) {
+        const { data: worksInMusicData } = await supabase
+          .rpc('get_cohort_percentile', { 
+            user_email: userEmail, 
+            cohort_type: 'works_in_music',
+            cohort_value: cohortStats.works_in_music
+          })
+        worksInMusicPercentile = worksInMusicData
+      }
+      
+      if (cohortStats.plays_music) {
+        const { data: playsMusicData } = await supabase
+          .rpc('get_cohort_percentile', { 
+            user_email: userEmail, 
+            cohort_type: 'plays_music',
+            cohort_value: cohortStats.plays_music
+          })
+        playsMusicPercentile = playsMusicData
+      }
+
       cohortPercentiles = {
         gender: genderPercentile,
         decade: decadePercentile,
-        city: cityPercentile
+        city: cityPercentile,
+        works_in_music: worksInMusicPercentile,
+        plays_music: playsMusicPercentile
       }
     }
 

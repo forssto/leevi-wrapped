@@ -165,7 +165,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
 
         {/* Bottom Stats */}
         <motion.div 
-          className="mt-12 grid grid-cols-2 gap-6 max-w-2xl mx-auto"
+          className="mt-12 flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -176,15 +176,6 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             <div className="text-white/80">
               Rating Difference
-            </div>
-          </div>
-          
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
-              {data.users_who_liked_fav_more + data.users_who_liked_worst_less}
-            </div>
-            <div className="text-white/80">
-              Total Comparisons
             </div>
           </div>
         </motion.div>
