@@ -28,11 +28,12 @@ export async function GET(request: NextRequest) {
 
     const result = albumData[0]
 
-    // Get all album rankings for this user
+    // Get all album rankings for this user (excluding "Single")
     const { data: allAlbums, error: allAlbumsError } = await supabase
       .from('mv_user_album_avg')
       .select('album, album_avg')
       .eq('email', userEmail)
+      .neq('album', 'Single')
       .order('album_avg', { ascending: false })
 
     if (allAlbumsError) {

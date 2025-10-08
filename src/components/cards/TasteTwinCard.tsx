@@ -152,19 +152,51 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
                 >
-                  <div className="text-lg font-semibold text-white mb-2">
+                  <div className="text-lg font-semibold text-white mb-3">
                     {hotTake.track_name}
+                  </div>
+                  
+                  {/* Simple Rating Bar */}
+                  <div className="mb-3">
+                    <div className="relative h-2 bg-white/20 rounded-full mb-2">
+                      {/* Scale markers */}
+                      <div className="absolute left-0 top-0 w-px h-2 bg-white/40"></div>
+                      <div className="absolute right-0 top-0 w-px h-2 bg-white/40"></div>
+                      
+                      {/* Rating markers */}
+                      <div 
+                        className="absolute top-0 w-1 h-2 bg-orange-400 rounded-full transform -translate-x-1/2"
+                        style={{ left: `${((hotTake.twin_rating - 4) / 6) * 100}%` }}
+                        title={`Twin: ${formatFinnishNumber(hotTake.twin_rating, 1)}`}
+                      ></div>
+                      <div 
+                        className="absolute top-0 w-1 h-2 bg-yellow-400 rounded-full transform -translate-x-1/2"
+                        style={{ left: `${((hotTake.user_rating - 4) / 6) * 100}%` }}
+                        title={`You: ${formatFinnishNumber(hotTake.user_rating, 1)}`}
+                      ></div>
+                      <div 
+                        className="absolute top-0 w-1 h-2 bg-green-400 rounded-full transform -translate-x-1/2"
+                        style={{ left: `${((hotTake.crowd_avg - 4) / 6) * 100}%` }}
+                        title={`Popular: ${formatFinnishNumber(hotTake.crowd_avg, 1)}`}
+                      ></div>
+                    </div>
+                    
+                    {/* Scale labels */}
+                    <div className="flex justify-between text-xs text-white/60">
+                      <span>4</span>
+                      <span>10</span>
+                    </div>
                   </div>
                   
                   <div className="flex justify-between items-center text-sm">
                     <div className="text-white/80">
-                      You: <span className="font-semibold text-blue-300">{formatRating(hotTake.user_rating, true)}</span>
+                      You: <span className="font-semibold text-yellow-300">{formatRating(hotTake.user_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Twin: <span className="font-semibold text-green-300">{formatRating(hotTake.twin_rating, true)}</span>
+                      Twin: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Crowd: <span className="font-semibold text-gray-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
+                      Popular: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
                     </div>
                   </div>
                   
@@ -177,66 +209,6 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           </motion.div>
         )}
 
-        {/* Visual Chart */}
-        <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <h3 className="text-2xl font-bold text-white mb-6">Rating Comparison Chart</h3>
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-4xl mx-auto">
-            <div className="relative h-80 w-full">
-              {/* Chart Grid */}
-              <div className="absolute inset-0">
-                {/* Grid lines */}
-                {[4, 5, 6, 7, 8, 9, 10].map((rating) => (
-                  <div key={rating} className="absolute w-full h-px bg-white/20" style={{ top: `${((10 - rating) / 6) * 100}%` }} />
-                ))}
-                {[4, 5, 6, 7, 8, 9, 10].map((rating) => (
-                  <div key={rating} className="absolute h-full w-px bg-white/20" style={{ left: `${((rating - 4) / 6) * 100}%` }} />
-                ))}
-                
-                {/* Data points */}
-                {data.aligned_hot_takes.slice(0, 20).map((take, index) => {
-                  const x = ((take.user_rating - 4) / 6) * 100
-                  const y = ((10 - take.twin_rating) / 6) * 100
-                  return (
-                    <motion.div
-                      key={index}
-                      className="absolute w-3 h-3 bg-blue-400 rounded-full border-2 border-white"
-                      style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.8 + (index * 0.02) }}
-                    />
-                  )
-                })}
-                
-                {/* Perfect correlation line */}
-                <div className="absolute w-full h-px bg-green-400/50" style={{ top: '50%', transform: 'translateY(-50%)' }} />
-              </div>
-              
-              {/* Axis labels */}
-              <div className="absolute -bottom-8 left-0 right-0 text-center text-white/70 text-sm">
-                Your Ratings
-              </div>
-              <div className="absolute -left-12 top-1/2 transform -translate-y-1/2 -rotate-90 text-center text-white/70 text-sm">
-                Twin Ratings
-              </div>
-              
-              {/* Scale labels */}
-              <div className="absolute -bottom-6 left-0 text-white/60 text-xs">4</div>
-              <div className="absolute -bottom-6 right-0 text-white/60 text-xs">10</div>
-              <div className="absolute -left-8 top-0 text-white/60 text-xs">10</div>
-              <div className="absolute -left-8 bottom-0 text-white/60 text-xs">4</div>
-            </div>
-            
-            <div className="mt-4 text-center text-white/70 text-sm">
-              Each dot represents a song. Dots closer to the diagonal line show better agreement.
-            </div>
-          </div>
-        </motion.div>
 
         {/* Bottom Stats */}
         <motion.div 
