@@ -9,7 +9,7 @@ import HotTakeIndexCard from '../cards/HotTakeIndexCard'
 import EraBiasCard from '../cards/EraBiasCard'
 import CadenceArchetypeCard from '../cards/CadenceArchetypeCard'
 import ThemeAffinitiesCard from '../cards/ThemeAffinitiesCard'
-import PopularityReversalCard from '../cards/PopularityReversalCard'
+import ThankYouCard from '../cards/ThankYouCard'
 import { motion } from 'framer-motion'
 import LogoutButton from '../auth/LogoutButton'
 
@@ -52,8 +52,8 @@ export default function Dashboard({ user }: DashboardProps) {
       content: <ThemeAffinitiesCard userEmail={userEmail} />
     },
     {
-      title: "Popularity Reversal",
-      content: <PopularityReversalCard userEmail={userEmail} />
+      title: "Thank You",
+      content: <ThankYouCard />
     },
   ]
 
@@ -233,37 +233,43 @@ export default function Dashboard({ user }: DashboardProps) {
         
         {/* Mobile Clickable Areas */}
         <div className="fixed inset-0 z-40 md:hidden">
-          {/* Left side clickable area */}
-          <div 
-            className="absolute left-0 top-0 w-1/2 h-full cursor-pointer"
-            onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
-          />
-          {/* Right side clickable area */}
-          <div 
-            className="absolute right-0 top-0 w-1/2 h-full cursor-pointer"
-            onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
-          />
+          {/* Left side clickable area (hidden on first card) */}
+          {currentSlide > 0 && (
+            <div 
+              className="absolute left-0 top-0 w-1/2 h-full cursor-pointer"
+              onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+            />
+          )}
+          {/* Right side clickable area (hidden on last card) */}
+          {currentSlide < slides.length - 1 && (
+            <div 
+              className="absolute right-0 top-0 w-1/2 h-full cursor-pointer"
+              onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+            />
+          )}
         </div>
 
         {/* Card Container with Side Navigation */}
         <div className="relative max-w-7xl mx-auto">
-                {/* Left Arrow - Fixed Position */}
-                <button
-                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
-                  disabled={currentSlide === 0}
-                  className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
-                >
-                  ←
-                </button>
+                {/* Left Arrow - Fixed Position (hidden on first card) */}
+                {currentSlide > 0 && (
+                  <button
+                    onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                    className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 flex items-center justify-center shadow-lg"
+                  >
+                    ←
+                  </button>
+                )}
                 
-                {/* Right Arrow - Fixed Position */}
-                <button
-                  onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
-                  disabled={currentSlide === slides.length - 1}
-                  className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
-                >
-                  →
-                </button>
+                {/* Right Arrow - Fixed Position (hidden on last card) */}
+                {currentSlide < slides.length - 1 && (
+                  <button
+                    onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+                    className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 flex items-center justify-center shadow-lg"
+                  >
+                    →
+                  </button>
+                )}
           
           {/* Card Content */}
           <motion.div
@@ -279,14 +285,6 @@ export default function Dashboard({ user }: DashboardProps) {
         </div>
       </div>
 
-            {/* Keyboard hint */}
-            <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
-              <div className="text-center">
-                <p className="text-white/50 text-xs bg-black/40 backdrop-blur-lg rounded-lg px-4 py-2 border border-white/10">
-                  Use ← → arrow keys to navigate
-                </p>
-        </div>
-      </div>
     </div>
   )
 }

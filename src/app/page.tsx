@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import LoginButton from '@/components/auth/LoginButton'
+import Image from 'next/image'
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true)
@@ -52,8 +53,19 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+    <div className="min-h-screen bg-black flex items-center justify-center">
       <div className="text-center">
+        {/* Typewriter Image */}
+        <div className="mb-8">
+          <Image 
+            src="/kuvia/kirjoituskone.gif"
+            alt="Typewriter"
+            width={200}
+            height={150}
+            className="mx-auto"
+          />
+        </div>
+        
         <h1 className="text-6xl font-bold text-white mb-4">
           Leevi Wrapped
         </h1>
