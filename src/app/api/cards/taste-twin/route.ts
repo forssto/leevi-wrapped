@@ -206,13 +206,17 @@ export async function GET(request: NextRequest) {
     }
 
     // Get twin's actual name from participants table
-    const { data: twinParticipant } = await supabase
+    const { data: twinParticipant, error: twinError } = await supabase
       .from('participants')
       .select('name')
       .eq('email', bestTwin.email)
       .single()
     
+    console.log('Twin participant data:', twinParticipant, 'Error:', twinError)
+    
     const twinName = twinParticipant?.name || bestTwin.email.split('@')[0] // Fallback to email prefix if name not found
+    
+    console.log('Final twin name:', twinName)
 
     return Response.json({
       twin_name: twinName,

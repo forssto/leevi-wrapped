@@ -69,7 +69,7 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
   const hotTakeInfo = getHotTakeLevel(data.hot_take_index)
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-8">
+    <div className="w-full h-full bg-black flex flex-col items-center justify-center p-8">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-20"

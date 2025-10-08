@@ -81,7 +81,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
   const minRating = Math.min(...data.decade_ratings.map(d => d.avg_rating))
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-8">
+    <div className="w-full h-full bg-black flex flex-col items-center justify-center p-8">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-20"

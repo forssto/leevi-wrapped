@@ -52,6 +52,8 @@ BEGIN
                 WHEN 'gender' THEN p.gender = cohort_value
                 WHEN 'decade' THEN p.decade = cohort_value
                 WHEN 'city' THEN p.city = cohort_value
+                WHEN 'works_in_music' THEN p.works_in_music = cohort_value::boolean
+                WHEN 'plays_music' THEN p.plays_music = cohort_value::boolean
             END
     )
     SELECT 

@@ -65,14 +65,19 @@ export async function GET(request: NextRequest) {
       .single()
 
     let cohortPercentiles = {}
+    
+    console.log('Cohort stats:', cohortStats, 'Error:', cohortError)
+    
     if (cohortStats && !cohortError) {
       // Get gender percentile
-      const { data: genderPercentile } = await supabase
+      const { data: genderPercentile, error: genderError } = await supabase
         .rpc('get_cohort_percentile', { 
           user_email: userEmail, 
           cohort_type: 'gender',
           cohort_value: cohortStats.gender
         })
+      
+      console.log('Gender percentile:', genderPercentile, 'Error:', genderError)
       
       // Get decade percentile
       const { data: decadePercentile } = await supabase
@@ -101,7 +106,7 @@ export async function GET(request: NextRequest) {
             cohort_type: 'works_in_music',
             cohort_value: cohortStats.works_in_music
           })
-        worksInMusicPercentile = worksInMusicData
+        worksInMusicPercentile = worksInMusicData?.[0]?.percentile || null
       }
       
       if (cohortStats.plays_music) {
@@ -111,16 +116,18 @@ export async function GET(request: NextRequest) {
             cohort_type: 'plays_music',
             cohort_value: cohortStats.plays_music
           })
-        playsMusicPercentile = playsMusicData
+        playsMusicPercentile = playsMusicData?.[0]?.percentile || null
       }
 
       cohortPercentiles = {
-        gender: genderPercentile,
-        decade: decadePercentile,
-        city: cityPercentile,
+        gender: genderPercentile?.[0]?.percentile || null,
+        decade: decadePercentile?.[0]?.percentile || null,
+        city: cityPercentile?.[0]?.percentile || null,
         works_in_music: worksInMusicPercentile,
         plays_music: playsMusicPercentile
       }
+      
+      console.log('Final cohort percentiles:', cohortPercentiles)
     }
 
         return Response.json({

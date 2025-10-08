@@ -53,7 +53,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
 
   if (loading) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+      <div className="w-full h-full bg-black flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
       </div>
     )
@@ -61,7 +61,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
 
   if (!data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+      <div className="w-full h-full bg-black flex items-center justify-center">
         <div className="text-white text-xl">No data available</div>
       </div>
     )
