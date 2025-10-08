@@ -10,6 +10,7 @@ import EraBiasCard from '../cards/EraBiasCard'
 import CadenceArchetypeCard from '../cards/CadenceArchetypeCard'
 import ThemeAffinitiesCard from '../cards/ThemeAffinitiesCard'
 import PopularityReversalCard from '../cards/PopularityReversalCard'
+import PredictionReportCard from '../cards/PredictionReportCard'
 import { motion } from 'framer-motion'
 
 interface DashboardProps {
@@ -54,6 +55,10 @@ export default function Dashboard({ user }: DashboardProps) {
     {
       title: "Popularity Reversal",
       content: <PopularityReversalCard userEmail={userEmail} />
+    },
+    {
+      title: "Prediction Report Card",
+      content: <PredictionReportCard userEmail={userEmail} />
     }
   ]
 
