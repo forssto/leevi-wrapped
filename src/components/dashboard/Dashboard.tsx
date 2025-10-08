@@ -73,7 +73,7 @@ export default function Dashboard({ user }: DashboardProps) {
 
 
         return (
-          <div className="min-h-screen bg-black">
+          <div className="min-h-screen bg-black" style={{ minHeight: '100vh' }}>
             {/* Header */}
             <div className="flex justify-between items-center p-4 border-b border-white/20">
               <motion.h1 
@@ -231,22 +231,36 @@ export default function Dashboard({ user }: DashboardProps) {
           </p>
         </div>
         
+        {/* Mobile Clickable Areas */}
+        <div className="fixed inset-0 z-40 md:hidden">
+          {/* Left side clickable area */}
+          <div 
+            className="absolute left-0 top-0 w-1/2 h-full cursor-pointer"
+            onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+          />
+          {/* Right side clickable area */}
+          <div 
+            className="absolute right-0 top-0 w-1/2 h-full cursor-pointer"
+            onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+          />
+        </div>
+
         {/* Card Container with Side Navigation */}
         <div className="relative max-w-7xl mx-auto">
-                {/* Left Arrow */}
+                {/* Left Arrow - Fixed Position */}
                 <button
                   onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
                   disabled={currentSlide === 0}
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
                 >
                   ←
                 </button>
                 
-                {/* Right Arrow */}
+                {/* Right Arrow - Fixed Position */}
                 <button
                   onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
                   disabled={currentSlide === slides.length - 1}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
                 >
                   →
                 </button>
@@ -271,8 +285,8 @@ export default function Dashboard({ user }: DashboardProps) {
                 <p className="text-white/50 text-xs bg-black/40 backdrop-blur-lg rounded-lg px-4 py-2 border border-white/10">
                   Use ← → arrow keys to navigate
                 </p>
-              </div>
-            </div>
+        </div>
+      </div>
     </div>
   )
 }

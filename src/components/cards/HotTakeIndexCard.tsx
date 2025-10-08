@@ -107,12 +107,6 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
           <div className="text-lg text-white/70 mb-6">
             Average disagreement with the crowd
           </div>
-          
-          <div className="bg-white/10 backdrop-blur-lg rounded-full px-6 py-3 inline-block">
-            <span className="text-white/80 text-lg">
-              Top {data.rank_percentile.toFixed(0)}% most opinionated
-            </span>
-          </div>
         </motion.div>
 
         {/* Top Hot Takes */}
@@ -183,6 +177,9 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
             </div>
             <div className="text-white/80">
               Percentile Rank
+            </div>
+            <div className="text-white/60 text-xs mt-1">
+              How opinionated you are compared to other reviewers
             </div>
           </div>
           

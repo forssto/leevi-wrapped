@@ -167,7 +167,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
                   </div>
                   
                   <div className="text-sm font-semibold text-white mt-2">
-                    {formatFinnishNumber(decade.avg_rating, 1)}
+                    {formatFinnishNumber(decade.avg_rating, 2)}
                   </div>
                   
                   <div className="text-xs text-white/60">
@@ -207,7 +207,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
               Least Favorite
             </div>
             <div className="text-white/80 text-sm">
-              {data.decade_ratings.find(d => d.decade === data.worst_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.worst_decade)!.avg_rating, 1) : '0,0'} avg rating
+              {data.decade_ratings.find(d => d.decade === data.worst_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.worst_decade)!.avg_rating, 2) : '0,00'} avg rating
             </div>
           </div>
           

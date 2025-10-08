@@ -167,17 +167,17 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                       <div 
                         className="absolute top-0 w-1 h-2 bg-orange-400 rounded-full transform -translate-x-1/2"
                         style={{ left: `${((hotTake.twin_rating - 4) / 6) * 100}%` }}
-                        title={`Twin: ${formatFinnishNumber(hotTake.twin_rating, 1)}`}
+                        title={`Twin: ${formatFinnishNumber(hotTake.twin_rating, 2)}`}
                       ></div>
                       <div 
                         className="absolute top-0 w-1 h-2 bg-yellow-400 rounded-full transform -translate-x-1/2"
                         style={{ left: `${((hotTake.user_rating - 4) / 6) * 100}%` }}
-                        title={`You: ${formatFinnishNumber(hotTake.user_rating, 1)}`}
+                        title={`You: ${formatFinnishNumber(hotTake.user_rating, 2)}`}
                       ></div>
                       <div 
                         className="absolute top-0 w-1 h-2 bg-green-400 rounded-full transform -translate-x-1/2"
                         style={{ left: `${((hotTake.crowd_avg - 4) / 6) * 100}%` }}
-                        title={`Popular: ${formatFinnishNumber(hotTake.crowd_avg, 1)}`}
+                        title={`Popular: ${formatFinnishNumber(hotTake.crowd_avg, 2)}`}
                       ></div>
                     </div>
                     
@@ -196,12 +196,12 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                       Twin: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Popular: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
+                      Popular: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 2)}</span>
                     </div>
                   </div>
                   
                   <div className="mt-2 text-xs text-white/60">
-                    {hotTake.delta_from_avg > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta_from_avg, 1)} from crowd average
+                    {hotTake.delta_from_avg > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta_from_avg, 2)} from crowd average
                   </div>
                 </motion.div>
               ))}
@@ -212,26 +212,20 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
 
         {/* Bottom Stats */}
         <motion.div 
-          className="grid grid-cols-2 gap-6 max-w-2xl mx-auto"
+          className="flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
           <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
-              {data.overlap_count}
-            </div>
-            <div className="text-white/80">
-              Songs in Common
-            </div>
-          </div>
-          
-          <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
               {data.aligned_hot_takes.length}
             </div>
             <div className="text-white/80">
               Aligned Hot Takes
+            </div>
+            <div className="text-white/60 text-xs mt-1">
+              Songs where you and your twin both disagreed with the crowd
             </div>
           </div>
         </motion.div>

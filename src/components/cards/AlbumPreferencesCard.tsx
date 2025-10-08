@@ -213,7 +213,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
                     {album.album}
                   </div>
                   <div className="text-sm font-bold text-white">
-                    {formatFinnishNumber(album.avg_rating, 1)}
+                    {formatFinnishNumber(album.avg_rating, 2)}
                   </div>
                 </motion.div>
               ))}
