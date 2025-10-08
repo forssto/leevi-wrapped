@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { formatRating, formatFinnishNumber } from '@/lib/gradeUtils'
 
 interface HotTake {
   song_order: number
@@ -149,20 +150,20 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
                       
                       <div className="flex gap-6 text-sm">
                         <div className="text-white/80">
-                          You: <span className="font-semibold text-blue-300">{hotTake.user_rating.toFixed(1)}</span>
+                          You: <span className="font-semibold text-blue-300">{formatRating(hotTake.user_rating, true)}</span>
                         </div>
                         <div className="text-white/80">
-                          Crowd: <span className="font-semibold text-gray-300">{hotTake.crowd_avg.toFixed(1)}</span>
+                          Crowd: <span className="font-semibold text-gray-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
                         </div>
                         <div className={`font-semibold ${hotTake.delta > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {hotTake.delta > 0 ? '+' : ''}{hotTake.delta.toFixed(1)} difference
+                          {hotTake.delta > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta, 1)} difference
                         </div>
                       </div>
                     </div>
                     
                     <div className="text-right">
                       <div className="text-3xl font-bold text-orange-400">
-                        {hotTake.abs_delta.toFixed(1)}
+                        {formatFinnishNumber(hotTake.abs_delta, 1)}
                       </div>
                       <div className="text-xs text-white/60">
                         Hot Take Score

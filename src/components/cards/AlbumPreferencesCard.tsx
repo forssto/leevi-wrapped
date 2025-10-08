@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { formatFinnishNumber } from '@/lib/gradeUtils'
 
 interface AlbumPreferencesData {
   fav_album: string
@@ -109,7 +110,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-6xl font-bold text-green-400 mb-4">
-              {data.fav_album_user_avg?.toFixed(2) || '0.00'}
+              {data.fav_album_user_avg ? formatFinnishNumber(data.fav_album_user_avg, 2) : '0,00'}
             </div>
             
             <div className="text-white/80 mb-4">
@@ -150,7 +151,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-6xl font-bold text-red-400 mb-4">
-              {data.worst_album_user_avg?.toFixed(2) || '0.00'}
+              {data.worst_album_user_avg ? formatFinnishNumber(data.worst_album_user_avg, 2) : '0,00'}
             </div>
             
             <div className="text-white/80 mb-4">
@@ -174,7 +175,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
         >
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
-              {((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0)).toFixed(2)}
+              {formatFinnishNumber((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0), 2)}
             </div>
             <div className="text-white/80">
               Rating Difference

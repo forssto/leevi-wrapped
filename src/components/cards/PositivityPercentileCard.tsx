@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { formatFinnishNumber } from '@/lib/gradeUtils'
 
 interface PositivityPercentileData {
   user_avg: number
@@ -107,7 +108,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className="text-8xl font-bold text-white mb-4">
-            {data.user_avg?.toFixed(2) || '0.00'}
+            {data.user_avg ? formatFinnishNumber(data.user_avg, 2) : '0,00'}
           </div>
           <div className="text-2xl text-white/80 mb-2">
             Your Average Rating
@@ -136,7 +137,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
         >
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-3xl font-bold text-white mb-2">
-              {data.all_avg?.toFixed(2) || '0.00'}
+              {data.all_avg ? formatFinnishNumber(data.all_avg, 2) : '0,00'}
             </div>
             <div className="text-white/80">
               Overall Average
@@ -145,7 +146,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-3xl font-bold text-white mb-2">
-              {data.all_percentile?.toFixed(0) || '0'}%
+              {data.all_percentile ? formatFinnishNumber(data.all_percentile, 0) : '0'}%
             </div>
             <div className="text-white/80">
               Percentile Rank
@@ -164,19 +165,19 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
             {data.cohort_percentiles.gender && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Gender: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.gender?.toFixed(0) || '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.gender ? formatFinnishNumber(data.cohort_percentiles.gender, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.decade && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Decade: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.decade?.toFixed(0) || '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.decade ? formatFinnishNumber(data.cohort_percentiles.decade, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.city && (
               <div className="bg-white/10 backdrop-blur-lg rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">City: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.city?.toFixed(0) || '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.city ? formatFinnishNumber(data.cohort_percentiles.city, 0) : '0'}%</span>
               </div>
             )}
           </motion.div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { formatFinnishNumber } from '@/lib/gradeUtils'
 
 interface DecadeRating {
   decade: number
@@ -122,7 +123,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
           </div>
           
           <div className="text-2xl text-white/80 mb-2">
-            Average Rating: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating.toFixed(2)}
+            Average Rating: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.best_decade)!.avg_rating, 2) : '0,00'}
           </div>
           
           <div className="text-lg text-white/60">
@@ -173,7 +174,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
                   </div>
                   
                   <div className="text-sm font-semibold text-white mt-2">
-                    {decade.avg_rating.toFixed(1)}
+                    {formatFinnishNumber(decade.avg_rating, 1)}
                   </div>
                   
                   <div className="text-xs text-white/60">
@@ -214,7 +215,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
               Least Favorite
             </div>
             <div className="text-white/80 text-sm">
-              {data.decade_ratings.find(d => d.decade === data.worst_decade)?.avg_rating.toFixed(1)} avg rating
+              {data.decade_ratings.find(d => d.decade === data.worst_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.worst_decade)!.avg_rating, 1) : '0,0'} avg rating
             </div>
           </div>
           

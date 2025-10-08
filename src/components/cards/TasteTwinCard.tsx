@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { formatRating, formatFinnishNumber } from '@/lib/gradeUtils'
 
 interface HotTake {
   song_order: number
@@ -166,18 +167,18 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                   
                   <div className="flex justify-between items-center text-sm">
                     <div className="text-white/80">
-                      You: <span className="font-semibold text-blue-300">{hotTake.user_rating.toFixed(1)}</span>
+                      You: <span className="font-semibold text-blue-300">{formatRating(hotTake.user_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Twin: <span className="font-semibold text-green-300">{hotTake.twin_rating.toFixed(1)}</span>
+                      Twin: <span className="font-semibold text-green-300">{formatRating(hotTake.twin_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Crowd: <span className="font-semibold text-gray-300">{hotTake.crowd_avg.toFixed(1)}</span>
+                      Crowd: <span className="font-semibold text-gray-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
                     </div>
                   </div>
                   
                   <div className="mt-2 text-xs text-white/60">
-                    {hotTake.delta_from_avg > 0 ? '+' : ''}{hotTake.delta_from_avg.toFixed(1)} from crowd average
+                    {hotTake.delta_from_avg > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta_from_avg, 1)} from crowd average
                   </div>
                 </motion.div>
               ))}
