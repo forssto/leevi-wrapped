@@ -62,22 +62,35 @@ export async function GET(request: NextRequest) {
     // 5. Review streak analysis (20+ songs in 3 hours)
     const sortedReviews = reviews.sort((a, b) => new Date(a.review_time).getTime() - new Date(b.review_time).getTime())
     let streaks = 0
-    let currentStreakStart = 0
+    let i = 0
     
-    for (let i = 0; i < sortedReviews.length; i++) {
-      const currentTime = new Date(sortedReviews[i].review_time).getTime()
-      const streakStartTime = new Date(sortedReviews[currentStreakStart].review_time).getTime()
-      const timeDiffHours = (currentTime - streakStartTime) / (1000 * 60 * 60)
+    while (i < sortedReviews.length) {
+      // Find the start of a potential streak
+      const streakStart = i
+      let streakEnd = i
       
-      if (timeDiffHours <= 3) {
-        // Still within 3-hour window
-        if (i - currentStreakStart + 1 >= 20) {
-          // Found a streak of 20+ songs
-          streaks++
+      // Look for 20+ consecutive reviews within 3 hours
+      for (let j = i; j < sortedReviews.length; j++) {
+        const startTime = new Date(sortedReviews[streakStart].review_time).getTime()
+        const currentTime = new Date(sortedReviews[j].review_time).getTime()
+        const timeDiffHours = (currentTime - startTime) / (1000 * 60 * 60)
+        
+        if (timeDiffHours <= 3) {
+          streakEnd = j
+        } else {
+          break
         }
+      }
+      
+      // Check if this is a valid streak (20+ songs)
+      const songsInStreak = streakEnd - streakStart + 1
+      if (songsInStreak >= 20) {
+        streaks++
+        // Move past this entire streak to avoid overlap
+        i = streakEnd + 1
       } else {
-        // Outside 3-hour window, reset streak
-        currentStreakStart = i
+        // No valid streak found, move to next review
+        i++
       }
     }
 
