@@ -7,13 +7,13 @@ import { User } from '@supabase/supabase-js'
 export default function DebugAuthPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [reviews, setReviews] = useState<any[]>([])
-  const [participants, setParticipants] = useState<any[]>([])
+  const [reviews, setReviews] = useState<Array<{participant_email: string, song_order: number, rating: number}>>([])
+  const [participants, setParticipants] = useState<Array<{email: string, done: boolean}>>([])
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser()
+        const { data: { user } } = await supabase.auth.getUser()
         console.log('Current user:', user)
         setUser(user)
 
@@ -103,7 +103,7 @@ export default function DebugAuthPage() {
             <li>anttilei@gmail.com</li>
           </ul>
           <p className="mt-2 text-sm">
-            If your email is not in this list, you won't see any data in the cards.
+            If your email is not in this list, you won&apos;t see any data in the cards.
           </p>
         </div>
       </div>

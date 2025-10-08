@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all reviews in batches to avoid the 1000 limit
-    let allReviews: any[] = []
+    let allReviews: Array<{participant_email: string, song_order: number, rating: number}> = []
     let from = 0
     const batchSize = 1000
     

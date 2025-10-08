@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all reviews to calculate crowd averages (in batches to avoid 1000 limit)
-    let allReviews: any[] = []
+    let allReviews: Array<{song_order: number, rating: number}> = []
     let from = 0
     const batchSize = 1000
     
