@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface AlbumPreferencesData {
   fav_album: string
@@ -62,16 +63,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
   }
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-8">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{
-          backgroundImage: `url('/backgrounds/tausta_${Math.floor(Math.random() * 16) + 1}.jpg')`
-        }}
-      />
-      
-      <div className="relative z-10 text-center max-w-6xl w-full">
+    <CardWrapper>
         {/* Title */}
         <motion.h1 
           className="text-5xl font-bold text-white mb-12"
@@ -191,7 +183,6 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
           </div>
         </motion.div>
-      </div>
-    </div>
+    </CardWrapper>
   )
 }

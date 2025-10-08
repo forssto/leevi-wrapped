@@ -58,10 +58,9 @@ export default function PopularityReversalCard({ userEmail }: PopularityReversal
   if (loading) {
     return (
       <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    )
-  }
+        <div className="text-white text-xl">Loading...</CardWrapper>
+  )
+}
 
   if (!data) {
     return (
@@ -88,16 +87,7 @@ export default function PopularityReversalCard({ userEmail }: PopularityReversal
   }
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center p-8 overflow-hidden rounded-lg">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{
-          backgroundImage: `url('/backgrounds/tausta_${Math.floor(Math.random() * 16) + 1}.jpg')`
-        }}
-      />
-      
-      <div className="relative z-10 text-center max-w-6xl w-full">
+    <CardWrapper>
         {/* Title */}
         <motion.h1 
           className="text-6xl font-bold text-white mb-8"

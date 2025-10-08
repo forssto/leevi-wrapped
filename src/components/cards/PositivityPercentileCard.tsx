@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface PositivityPercentileData {
   user_avg: number
@@ -45,19 +46,12 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
     fetchData()
   }, [userEmail])
 
-  if (loading) {
+  if (loading || !data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    )
-  }
-
-  if (!data) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">No data available</div>
-      </div>
+      <CardWrapper 
+        isLoading={loading} 
+        error={!data ? 'No data available for Positivity Percentile.' : undefined}
+      />
     )
   }
 
@@ -80,16 +74,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
   }
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-8">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{
-          backgroundImage: `url('/backgrounds/tausta_${Math.floor(Math.random() * 16) + 1}.jpg')`
-        }}
-      />
-      
-      <div className="relative z-10 text-center max-w-4xl">
+    <CardWrapper>
         {/* Title */}
         <motion.h1 
           className="text-6xl font-bold text-white mb-8"
@@ -182,7 +167,6 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
             )}
           </motion.div>
         )}
-      </div>
-    </div>
+    </CardWrapper>
   )
 }
