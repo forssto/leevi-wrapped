@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { formatRating, formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface HotTake {
   song_order: number
@@ -54,29 +55,12 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
     fetchData()
   }, [userEmail])
 
-  if (loading) {
+  if (loading || error || !data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</CardWrapper>
-  )
-}
-
-  if (error) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl text-center">
-          <div className="text-red-400 mb-2">Error:</div>
-          <div>{error}</div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!data) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">No taste twin found</div>
-      </div>
+      <CardWrapper 
+        isLoading={loading} 
+        error={error || (!data ? 'No taste twin found' : undefined)}
+      />
     )
   }
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface ThemeAffinity {
   name: string
@@ -54,18 +55,12 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
     fetchData()
   }, [userEmail])
 
-  if (loading) {
+  if (loading || !data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</CardWrapper>
-  )
-}
-
-  if (!data) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">No data available for Theme Affinities.</div>
-      </div>
+      <CardWrapper 
+        isLoading={loading} 
+        error={!data ? 'No data available for Theme Affinities.' : undefined}
+      />
     )
   }
 
@@ -86,13 +81,6 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
     return 'text-red-400'
   }
 
-  const getCorrelationEmoji = (correlation: number) => {
-    if (correlation > 0.3) return '💚'
-    if (correlation > 0.1) return '👍'
-    if (correlation > -0.1) return '😐'
-    if (correlation > -0.3) return '👎'
-    return '💔'
-  }
 
   return (
     <CardWrapper>
@@ -207,7 +195,6 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
             ))}
           </div>
         </motion.div>
-      </div>
-    </div>
+    </CardWrapper>
   )
 }

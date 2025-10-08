@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { formatRating, formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface HotTake {
   song_order: number
@@ -48,18 +49,12 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
     fetchData()
   }, [userEmail])
 
-  if (loading) {
+  if (loading || !data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</CardWrapper>
-  )
-}
-
-  if (!data) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">No data available</div>
-      </div>
+      <CardWrapper 
+        isLoading={loading} 
+        error={!data ? 'No data available for Hot Take Index.' : undefined}
+      />
     )
   }
 

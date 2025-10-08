@@ -1,6 +1,17 @@
 import { NextRequest } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
+interface ReviewWithSong {
+  song_order: number
+  rating: number
+  songs: {
+    track_name: string
+    album: string
+    year: number
+    lastfm_pos: number
+  }[]
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -98,11 +109,11 @@ export async function GET(request: NextRequest) {
     if (userReviews && userReviews.length > 0) {
       // Sort by Last.fm position (lower = more popular)
       const sortedReviews = userReviews
-        .map(review => ({
-          track_name: review.songs.track_name,
-          album: review.songs.album,
-          year: review.songs.year,
-          lastfm_pos: review.songs.lastfm_pos,
+        .map((review: ReviewWithSong) => ({
+          track_name: review.songs[0].track_name,
+          album: review.songs[0].album,
+          year: review.songs[0].year,
+          lastfm_pos: review.songs[0].lastfm_pos,
           user_rating: review.rating
         }))
         .sort((a, b) => a.lastfm_pos - b.lastfm_pos)

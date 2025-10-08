@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 interface CardWrapperProps {
-  children: ReactNode
+  children?: ReactNode
   backgroundImage?: string
   isLoading?: boolean
   error?: string

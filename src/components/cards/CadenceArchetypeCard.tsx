@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { formatFinnishNumber } from '@/lib/gradeUtils'
+import CardWrapper from './CardWrapper'
 
 interface CadenceArchetypeData {
   archetype: string
@@ -50,18 +51,12 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
     fetchData()
   }, [userEmail])
 
-  if (loading) {
+  if (loading || !data) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</CardWrapper>
-  )
-}
-
-  if (!data) {
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">No data available for Cadence Archetype.</div>
-      </div>
+      <CardWrapper 
+        isLoading={loading} 
+        error={!data ? 'No data available for Cadence Archetype.' : undefined}
+      />
     )
   }
 
@@ -183,7 +178,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
             <div>
               <h4 className="text-lg font-semibold text-white/90 mb-3">Timing Insights</h4>
               <ul className="space-y-2 text-white/80">
-                <li>• You're most active at <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
+                <li>• You&apos;re most active at <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
                 <li>• Your favorite day is <span className="font-semibold text-white">{data.day_preference}</span></li>
                 <li>• You typically wait <span className="font-semibold text-white">{formatFinnishNumber(data.avg_lag_days, 1)} days</span> before reviewing</li>
               </ul>
@@ -199,7 +194,6 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
             </div>
           </div>
         </motion.div>
-      </div>
-    </div>
+    </CardWrapper>
   )
 }
