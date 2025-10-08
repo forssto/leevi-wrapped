@@ -213,8 +213,17 @@ export async function GET(request: NextRequest) {
       .single()
     
     console.log('Twin participant data:', twinParticipant, 'Error:', twinError)
+    console.log('Twin participant name field:', twinParticipant?.name)
+    console.log('Is name empty?', !twinParticipant?.name)
     
-    const twinName = twinParticipant?.name || bestTwin.email.split('@')[0] // Fallback to email prefix if name not found
+    // Better name handling - if name is empty or just whitespace, use a more descriptive fallback
+    let twinName = twinParticipant?.name?.trim()
+    if (!twinName) {
+      // If no name, try to create a better display name from email
+      const emailPrefix = bestTwin.email.split('@')[0]
+      // Convert dots to spaces and capitalize
+      twinName = emailPrefix.replace(/\./g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+    }
     
     console.log('Final twin name:', twinName)
 

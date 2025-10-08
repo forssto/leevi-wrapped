@@ -122,7 +122,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           {/* Time Preference */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 flex flex-col justify-center items-center text-center h-32">
             <div className="text-3xl font-bold text-white mb-2">
               {formatHour(data.most_active_hour)}
             </div>
@@ -135,7 +135,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           </div>
 
           {/* Day Preference */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 flex flex-col justify-center items-center text-center h-32">
             <div className="text-3xl font-bold text-white mb-2">
               {data.day_preference}
             </div>
@@ -145,7 +145,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           </div>
 
           {/* Average Lag */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 flex flex-col justify-center items-center text-center h-32">
             <div className="text-3xl font-bold text-white mb-2">
               {formatFinnishNumber(data.avg_lag_days, 1)}
             </div>
@@ -155,7 +155,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           </div>
 
           {/* Reviews per Day */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 flex flex-col justify-center items-center text-center h-32">
             <div className="text-3xl font-bold text-white mb-2">
               {formatFinnishNumber(data.reviews_per_day, 1)}
             </div>
