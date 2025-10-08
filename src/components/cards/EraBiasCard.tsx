@@ -11,8 +11,15 @@ interface DecadeRating {
   review_count: number
 }
 
+interface YearRating {
+  year: number
+  avg_rating: number
+  review_count: number
+}
+
 interface EraBiasData {
   decade_ratings: DecadeRating[]
+  year_ratings: YearRating[]
   best_decade: number
   worst_decade: number
   trend_slope: number
@@ -61,158 +68,161 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
     return `${decade}s`
   }
 
-  const getTrendEmoji = (direction: string) => {
-    switch (direction) {
-      case 'increasing': return '📈'
-      case 'decreasing': return '📉'
-      default: return '➡️'
-    }
-  }
 
-  const getTrendColor = (direction: string) => {
-    switch (direction) {
-      case 'increasing': return 'text-green-400'
-      case 'decreasing': return 'text-red-400'
-      default: return 'text-gray-400'
-    }
-  }
-
-  const maxRating = Math.max(...data.decade_ratings.map(d => d.avg_rating))
-  const minRating = Math.min(...data.decade_ratings.map(d => d.avg_rating))
+  const maxRating = Math.max(...data.year_ratings.map(y => y.avg_rating))
+  const minRating = Math.min(...data.year_ratings.map(y => y.avg_rating))
+  const ratingRange = maxRating - minRating
 
   return (
-    <div className="w-full h-full bg-black flex flex-col items-center justify-center p-8">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{
-          backgroundImage: `url('/backgrounds/tausta_${Math.floor(Math.random() * 16) + 1}.jpg')`
-        }}
-      />
-      
-      <div className="relative z-10 text-center max-w-6xl w-full">
-        {/* Title */}
-        <motion.h1 
-          className="text-5xl font-bold text-white mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Era Bias 📅
-        </motion.h1>
+    <CardWrapper>
+      {/* Title */}
+      <motion.h1 
+        className="text-5xl font-bold text-white mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Era Bias 📅
+      </motion.h1>
 
-        {/* Best Decade */}
-        <motion.div 
-          className="mb-12"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="text-3xl font-bold text-white mb-4">
-            Your Favorite Era
-          </div>
-          
-          <div className="text-6xl font-bold text-yellow-400 mb-4">
-            {getDecadeName(data.best_decade)}
-          </div>
-          
-          <div className="text-2xl text-white/80 mb-2">
-            Average Rating: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.best_decade)!.avg_rating, 2) : '0,00'}
-          </div>
-          
-          <div className="text-lg text-white/60">
-          </div>
-        </motion.div>
+      {/* Best Decade */}
+      <motion.div 
+        className="mb-8"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <div className="text-3xl font-bold text-white mb-4">
+          Your Favorite Era
+        </div>
+        
+        <div className="text-6xl font-bold text-yellow-400 mb-4">
+          {getDecadeName(data.best_decade)}
+        </div>
+        
+        <div className="text-2xl text-white/80 mb-2">
+          Average Rating: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.best_decade)!.avg_rating, 2) : '0,00'}
+        </div>
+      </motion.div>
 
-        {/* Decade Chart */}
-        <motion.div 
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <h3 className="text-2xl font-bold text-white mb-6">
-            Rating by Decade
-          </h3>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {data.decade_ratings.map((decade, index) => {
-              const height = ((decade.avg_rating - minRating) / (maxRating - minRating)) * 100 + 20
-              const isBest = decade.decade === data.best_decade
-              const isWorst = decade.decade === data.worst_decade
+      {/* Timeline Chart */}
+      <motion.div 
+        className="mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <h3 className="text-2xl font-bold text-white mb-6">
+          Your Rating Timeline
+        </h3>
+        
+        <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
+          <div className="relative h-64 w-full">
+            {/* Y-axis labels */}
+            <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-white/60 pr-2">
+              <span>{formatFinnishNumber(maxRating, 1)}</span>
+              <span>{formatFinnishNumber((maxRating + minRating) / 2, 1)}</span>
+              <span>{formatFinnishNumber(minRating, 1)}</span>
+            </div>
+            
+            {/* Chart area */}
+            <div className="ml-12 mr-4 h-full relative">
+              {/* Grid lines */}
+              <div className="absolute inset-0 flex flex-col justify-between">
+                <div className="border-t border-white/10"></div>
+                <div className="border-t border-white/10"></div>
+                <div className="border-t border-white/10"></div>
+              </div>
               
-              return (
-                <motion.div
-                  key={decade.decade}
-                  className="flex flex-col items-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                >
-                  <div className="text-sm text-white/80 mb-2">
-                    {getDecadeName(decade.decade)}
-                  </div>
+              {/* Data points and line */}
+              <svg className="absolute inset-0 w-full h-full">
+                {/* Line connecting points */}
+                <polyline
+                  fill="none"
+                  stroke="#fbbf24"
+                  strokeWidth="3"
+                  points={data.year_ratings.map((year, index) => {
+                    const x = (index / (data.year_ratings.length - 1)) * 100
+                    const y = 100 - ((year.avg_rating - minRating) / ratingRange) * 100
+                    return `${x}%,${y}%`
+                  }).join(' ')}
+                />
+                
+                {/* Data points */}
+                {data.year_ratings.map((year, index) => {
+                  const x = (index / (data.year_ratings.length - 1)) * 100
+                  const y = 100 - ((year.avg_rating - minRating) / ratingRange) * 100
+                  const isBest = year.year >= data.best_decade && year.year < data.best_decade + 10
                   
-                  <div className="relative w-16 h-32 bg-white/20 rounded-t-lg flex items-end">
-                    <motion.div
-                      className={`w-full rounded-t-lg ${
-                        isBest ? 'bg-yellow-400' : 
-                        isWorst ? 'bg-red-400' : 
-                        'bg-blue-400'
-                      }`}
-                      initial={{ height: 0 }}
-                      animate={{ height: `${height}%` }}
-                      transition={{ duration: 0.8, delay: 0.8 + index * 0.1 }}
+                  return (
+                    <circle
+                      key={year.year}
+                      cx={`${x}%`}
+                      cy={`${y}%`}
+                      r="4"
+                      fill={isBest ? "#fbbf24" : "#60a5fa"}
+                      className="hover:r-6 transition-all"
                     />
-                  </div>
-                  
-                  <div className="text-sm font-semibold text-white mt-2">
-                    {formatFinnishNumber(decade.avg_rating, 2)}
-                  </div>
-                  
-                  <div className="text-xs text-white/60">
-                  </div>
-                </motion.div>
-              )
-            })}
+                  )
+                })}
+              </svg>
+            </div>
+            
+            {/* X-axis labels */}
+            <div className="absolute bottom-0 left-12 right-4 flex justify-between text-xs text-white/60 mt-2">
+              {data.year_ratings.map((year, index) => {
+                if (index % Math.ceil(data.year_ratings.length / 8) === 0) {
+                  return (
+                    <span key={year.year} className="text-center">
+                      {year.year}
+                    </span>
+                  )
+                }
+                return null
+              })}
+            </div>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Trend and Stats */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
-              {getTrendEmoji(data.trend_direction)}
-            </div>
-            <div className={`text-lg font-semibold mb-2 ${getTrendColor(data.trend_direction)}`}>
-              {data.trend_direction.charAt(0).toUpperCase() + data.trend_direction.slice(1)} Trend
-            </div>
-            <div className="text-white/80 text-sm">
-              {data.trend_direction === 'increasing' ? 'You prefer newer music' :
-               data.trend_direction === 'decreasing' ? 'You prefer older music' :
-               'No clear preference'}
-            </div>
-          </div>
+      {/* Decade Summary */}
+      <motion.div 
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+      >
+        {data.decade_ratings.map((decade, index) => {
+          const isBest = decade.decade === data.best_decade
+          const isWorst = decade.decade === data.worst_decade
           
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
-              {getDecadeName(data.worst_decade)}
-            </div>
-            <div className="text-lg font-semibold text-red-400 mb-2">
-              Least Favorite
-            </div>
-            <div className="text-white/80 text-sm">
-              {data.decade_ratings.find(d => d.decade === data.worst_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.worst_decade)!.avg_rating, 2) : '0,00'} avg rating
-            </div>
-          </div>
-          
-        </motion.div>
-      </div>
-    </div>
+          return (
+            <motion.div
+              key={decade.decade}
+              className="bg-white/5 border border-white/20 rounded-xl p-4 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+            >
+              <div className="text-lg font-bold text-white mb-2">
+                {getDecadeName(decade.decade)}
+              </div>
+              
+              <div className={`text-3xl font-bold mb-2 ${
+                isBest ? 'text-yellow-400' : 
+                isWorst ? 'text-red-400' : 
+                'text-white'
+              }`}>
+                {formatFinnishNumber(decade.avg_rating, 2)}
+              </div>
+              
+              <div className="text-sm text-white/60">
+                {decade.review_count} songs
+              </div>
+            </motion.div>
+          )
+        })}
+      </motion.div>
+    </CardWrapper>
   )
 }

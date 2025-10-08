@@ -62,6 +62,26 @@ export async function GET(request: NextRequest) {
       review_count: ratings.length
     })).sort((a, b) => a.decade - b.decade)
 
+    // Also group by year for timeline
+    const yearRatings = new Map<number, number[]>()
+    
+    userReviews.forEach(review => {
+      const year = songYears.get(review.song_order)
+      if (!year) return
+      
+      if (!yearRatings.has(year)) {
+        yearRatings.set(year, [])
+      }
+      yearRatings.get(year)!.push(review.rating)
+    })
+
+    // Calculate average rating per year
+    const yearStats = Array.from(yearRatings.entries()).map(([year, ratings]) => ({
+      year,
+      avg_rating: ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length,
+      review_count: ratings.length
+    })).sort((a, b) => a.year - b.year)
+
     // Find best and worst decades
     const bestDecade = decadeStats.reduce((max, stat) => 
       stat.avg_rating > max.avg_rating ? stat : max
@@ -82,6 +102,7 @@ export async function GET(request: NextRequest) {
       
       return Response.json({
         decade_ratings: decadeStats,
+        year_ratings: yearStats,
         best_decade: bestDecade.decade,
         worst_decade: worstDecade.decade,
         trend_slope: slope,
@@ -91,6 +112,7 @@ export async function GET(request: NextRequest) {
 
     return Response.json({
       decade_ratings: decadeStats,
+      year_ratings: yearStats,
       best_decade: bestDecade.decade,
       worst_decade: worstDecade.decade,
       trend_slope: 0,
