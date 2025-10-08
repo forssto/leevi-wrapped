@@ -122,13 +122,13 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             Based on {data.overlap_count} shared song ratings
           </div>
           
-          {/* Correlation Definition */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 max-w-2xl mx-auto mb-8">
-            <div className="text-sm text-white/80">
-              <strong>Correlation coefficient (r):</strong> Measures how closely your ratings match. 
-              Values closer to 1.0 mean you agree more often, while values closer to -1.0 mean you often disagree.
-            </div>
-          </div>
+              {/* Correlation Definition */}
+              <div className="bg-white/5 border border-white/20 rounded-xl p-4 max-w-2xl mx-auto mb-8">
+                <div className="text-sm text-white/80">
+                  <strong>Correlation coefficient (r):</strong> Measures how closely your ratings match. 
+                  Values closer to 1.0 mean you agree more often, while values closer to -1.0 mean you often disagree.
+                </div>
+              </div>
         </motion.div>
 
         {/* Hot Takes Section */}
@@ -147,7 +147,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
               {data.aligned_hot_takes.slice(0, 6).map((hotTake, index) => (
                 <motion.div
                   key={hotTake.song_order}
-                  className="bg-white/10 backdrop-blur-lg rounded-xl p-4"
+                  className="bg-white/5 border border-white/20 rounded-xl p-4"
                   initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
@@ -217,7 +217,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
               {data.overlap_count}
             </div>
@@ -226,7 +226,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             </div>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
               {data.aligned_hot_takes.length}
             </div>

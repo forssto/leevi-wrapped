@@ -177,7 +177,7 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
               {data.rank_percentile.toFixed(0)}%
             </div>
@@ -186,12 +186,15 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
             </div>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">
               {data.top_hot_takes.length}
             </div>
             <div className="text-white/80">
               Top Hot Takes
+            </div>
+            <div className="text-white/60 text-xs mt-1">
+              Songs you rated most differently from the crowd
             </div>
           </div>
         </motion.div>

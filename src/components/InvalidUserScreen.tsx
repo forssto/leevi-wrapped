@@ -9,7 +9,7 @@ interface InvalidUserScreenProps {
 
 export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-8">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8">
       {/* Header */}
       <div className="absolute top-4 right-4">
         <LogoutButton />
@@ -45,7 +45,7 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 mb-8"
+          className="bg-white/5 border border-white/20 rounded-2xl p-8 mb-8"
         >
           <p className="text-white/90 text-lg mb-4">
             The Google account <span className="font-semibold text-yellow-300">{userEmail}</span> didn&apos;t complete the Leevi review project.
@@ -65,17 +65,12 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
         >
           <button
             onClick={() => window.location.href = '/'}
-            className="px-6 py-3 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
+            className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
           >
             Back to Home
           </button>
           
-          <button
-            onClick={() => window.location.href = 'mailto:contact@example.com'}
-            className="px-6 py-3 bg-blue-500/80 text-white rounded-lg hover:bg-blue-500 transition-colors"
-          >
-            Contact Support
-          </button>
+          <LogoutButton />
         </motion.div>
       </motion.div>
     </div>

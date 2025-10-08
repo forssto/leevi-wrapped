@@ -72,26 +72,26 @@ export default function Dashboard({ user }: DashboardProps) {
   }, [slides.length])
 
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      {/* Header */}
-      <div className="flex justify-between items-center p-4">
-        <motion.h1 
-          className="text-2xl font-bold text-white"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Your Leevi Wrapped
-        </motion.h1>
+        return (
+          <div className="min-h-screen bg-black">
+            {/* Header */}
+            <div className="flex justify-between items-center p-4 border-b border-white/20">
+              <motion.h1 
+                className="text-2xl font-bold text-white"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                Your Leevi Wrapped
+              </motion.h1>
         
         <div className="flex items-center gap-4">
           {/* User Switcher (only for tommi.forsstrom@gmail.com) */}
           {user.email === 'tommi.forsstrom@gmail.com' && (
-            <select 
-              value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
-              className="bg-white/20 text-white rounded-lg px-3 py-2 text-sm border border-white/30 max-w-xs"
-            >
+                  <select 
+                    value={userEmail}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    className="bg-white text-black rounded-lg px-3 py-2 text-sm border border-white max-w-xs"
+                  >
               <option value="tommi.forsstrom@gmail.com">tommi.forsstrom@gmail.com</option>
               <option value="aarolaakkonen22@gmail.com">aarolaakkonen22@gmail.com</option>
               <option value="anniinahavukainen@gmail.com">anniinahavukainen@gmail.com</option>
@@ -233,23 +233,23 @@ export default function Dashboard({ user }: DashboardProps) {
         
         {/* Card Container with Side Navigation */}
         <div className="relative max-w-7xl mx-auto">
-          {/* Left Arrow */}
-          <button
-            onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
-            disabled={currentSlide === 0}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-          >
-            ←
-          </button>
-          
-          {/* Right Arrow */}
-          <button
-            onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
-            disabled={currentSlide === slides.length - 1}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-          >
-            →
-          </button>
+                {/* Left Arrow */}
+                <button
+                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                  disabled={currentSlide === 0}
+                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  ←
+                </button>
+                
+                {/* Right Arrow */}
+                <button
+                  onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+                  disabled={currentSlide === slides.length - 1}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  →
+                </button>
           
           {/* Card Content */}
           <motion.div
@@ -265,29 +265,14 @@ export default function Dashboard({ user }: DashboardProps) {
         </div>
       </div>
 
-      {/* Bottom Navigation Dots */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
-        <div className="flex gap-2 bg-black/40 backdrop-blur-lg rounded-2xl px-4 py-2 border border-white/10">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                index === currentSlide 
-                  ? 'bg-white scale-125' 
-                  : 'bg-white/40 hover:bg-white/60'
-              }`}
-            />
-          ))}
-        </div>
-        
-        {/* Keyboard hint */}
-        <div className="text-center mt-2">
-          <p className="text-white/50 text-xs">
-            Use ← → arrow keys to navigate
-          </p>
-        </div>
-      </div>
+            {/* Keyboard hint */}
+            <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
+              <div className="text-center">
+                <p className="text-white/50 text-xs bg-black/40 backdrop-blur-lg rounded-lg px-4 py-2 border border-white/10">
+                  Use ← → arrow keys to navigate
+                </p>
+              </div>
+            </div>
     </div>
   )
 }

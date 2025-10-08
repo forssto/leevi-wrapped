@@ -205,8 +205,14 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'No taste twin found' }, { status: 404 })
     }
 
-    // Get twin's name (use email for now, could be pseudonymized)
-    const twinName = bestTwin.email.split('@')[0] // Use email prefix as name
+    // Get twin's actual name from participants table
+    const { data: twinParticipant } = await supabase
+      .from('participants')
+      .select('name')
+      .eq('email', bestTwin.email)
+      .single()
+    
+    const twinName = twinParticipant?.name || bestTwin.email.split('@')[0] // Fallback to email prefix if name not found
 
     return Response.json({
       twin_name: twinName,
