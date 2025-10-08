@@ -7,6 +7,7 @@ import AlbumPreferencesCard from '../cards/AlbumPreferencesCard'
 import TasteTwinCard from '../cards/TasteTwinCard'
 import HotTakeIndexCard from '../cards/HotTakeIndexCard'
 import EraBiasCard from '../cards/EraBiasCard'
+import CadenceArchetypeCard from '../cards/CadenceArchetypeCard'
 import { motion } from 'framer-motion'
 
 interface DashboardProps {
@@ -39,6 +40,10 @@ export default function Dashboard({ user }: DashboardProps) {
     {
       title: "Era Bias",
       content: <EraBiasCard userEmail={userEmail} />
+    },
+    {
+      title: "Cadence Archetype",
+      content: <CadenceArchetypeCard userEmail={userEmail} />
     }
   ]
 
