@@ -10,13 +10,10 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Email required' }, { status: 400 })
     }
 
-    // Get user's reviews with song year information
+    // Get user's reviews
     const { data: userReviews, error: userError } = await supabase
       .from('reviews')
-      .select(`
-        rating,
-        songs(year)
-      `)
+      .select('song_order, rating')
       .eq('participant_email', userEmail)
 
     if (userError) {
@@ -28,11 +25,27 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'No reviews found for user' }, { status: 404 })
     }
 
+    // Get song year information
+    const { data: songs, error: songsError } = await supabase
+      .from('songs')
+      .select('song_order, year')
+
+    if (songsError) {
+      console.error('Error getting songs:', songsError)
+      return Response.json({ error: 'Failed to get songs' }, { status: 500 })
+    }
+
+    // Create a map of song_order to year
+    const songYears = new Map()
+    songs.forEach(song => {
+      songYears.set(song.song_order, song.year)
+    })
+
     // Group ratings by decade
     const decadeRatings = new Map<number, number[]>()
     
     userReviews.forEach(review => {
-      const year = (review.songs as { year: number }[])[0]?.year
+      const year = songYears.get(review.song_order)
       if (!year) return
       const decade = Math.floor(year / 10) * 10
       

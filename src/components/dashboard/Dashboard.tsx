@@ -15,28 +15,30 @@ interface DashboardProps {
 
 export default function Dashboard({ user }: DashboardProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
+  
+  const userEmail = user.email || ''
 
 
   const slides = [
     {
       title: "Positivity Percentile",
-      content: <PositivityPercentileCard userEmail={user.email || ''} />
+      content: <PositivityPercentileCard userEmail={userEmail} />
     },
     {
       title: "Album Superfan & Nemesis",
-      content: <AlbumPreferencesCard userEmail={user.email || ''} />
+      content: <AlbumPreferencesCard userEmail={userEmail} />
     },
     {
       title: "Taste Twin Found!",
-      content: <TasteTwinCard userEmail={user.email || ''} />
+      content: <TasteTwinCard userEmail={userEmail} />
     },
     {
       title: "Hot Take Index",
-      content: <HotTakeIndexCard userEmail={user.email || ''} />
+      content: <HotTakeIndexCard userEmail={userEmail} />
     },
     {
       title: "Era Bias",
-      content: <EraBiasCard userEmail={user.email || ''} />
+      content: <EraBiasCard userEmail={userEmail} />
     }
   ]
 

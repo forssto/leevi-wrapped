@@ -10,19 +10,49 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Email required' }, { status: 400 })
     }
 
-    // Get all reviews to calculate crowd averages
-    const { data: allReviews, error: reviewsError } = await supabase
-      .from('reviews')
-      .select(`
-        song_order,
-        rating,
-        songs(track_name)
-      `)
-
-    if (reviewsError) {
-      console.error('Error getting reviews:', reviewsError)
-      return Response.json({ error: 'Failed to get reviews' }, { status: 500 })
+    // Get all reviews to calculate crowd averages (in batches to avoid 1000 limit)
+    let allReviews: any[] = []
+    let from = 0
+    const batchSize = 1000
+    
+    while (true) {
+      const { data: batch, error: batchError } = await supabase
+        .from('reviews')
+        .select('song_order, rating')
+        .range(from, from + batchSize - 1)
+      
+      if (batchError) {
+        console.error('Error getting reviews batch:', batchError)
+        return Response.json({ error: 'Failed to get reviews' }, { status: 500 })
+      }
+      
+      if (!batch || batch.length === 0) {
+        break
+      }
+      
+      allReviews = allReviews.concat(batch)
+      from += batchSize
+      
+      if (batch.length < batchSize) {
+        break
+      }
     }
+
+    // Get song names separately
+    const { data: songs, error: songsError } = await supabase
+      .from('songs')
+      .select('song_order, track_name')
+
+    if (songsError) {
+      console.error('Error getting songs:', songsError)
+      return Response.json({ error: 'Failed to get songs' }, { status: 500 })
+    }
+
+    // Create a map of song_order to track_name
+    const songNames = new Map()
+    songs.forEach(song => {
+      songNames.set(song.song_order, song.track_name)
+    })
 
     // Calculate crowd average for each song
     const crowdAverages = new Map<number, number>()
@@ -30,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     allReviews.forEach(review => {
       const songOrder = review.song_order
-      const trackName = (review.songs as { track_name: string }[])[0]?.track_name
+      const trackName = songNames.get(songOrder)
       if (!trackName) return
       
       if (!crowdAverages.has(songOrder)) {
@@ -76,7 +106,7 @@ export async function GET(request: NextRequest) {
 
       return {
         song_order: review.song_order,
-        track_name: (review.songs as { track_name: string }[])[0]?.track_name || 'Unknown',
+        track_name: songNames.get(review.song_order) || 'Unknown',
         user_rating: review.rating,
         crowd_avg: crowdAvg,
         delta: delta,

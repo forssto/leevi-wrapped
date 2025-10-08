@@ -27,15 +27,37 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Email required' }, { status: 400 })
     }
 
-    // Get all reviews
-    const { data: allReviews, error: reviewsError } = await supabase
-      .from('reviews')
-      .select('participant_email, song_order, rating')
-
-    if (reviewsError) {
-      console.error('Error getting reviews:', reviewsError)
-      return Response.json({ error: 'Failed to get reviews' }, { status: 500 })
+    // Get all reviews in batches to avoid the 1000 limit
+    let allReviews: any[] = []
+    let from = 0
+    const batchSize = 1000
+    
+    while (true) {
+      const { data: batch, error: batchError } = await supabase
+        .from('reviews')
+        .select('participant_email, song_order, rating')
+        .range(from, from + batchSize - 1)
+      
+      if (batchError) {
+        console.error('Error getting reviews batch:', batchError)
+        return Response.json({ error: 'Failed to get reviews' }, { status: 500 })
+      }
+      
+      if (!batch || batch.length === 0) {
+        break
+      }
+      
+      allReviews = allReviews.concat(batch)
+      from += batchSize
+      
+      // Safety check to avoid infinite loop
+      if (batch.length < batchSize) {
+        break
+      }
     }
+
+    console.log(`Fetched ${allReviews.length} total reviews`)
+    console.log('Sample reviews:', allReviews.slice(0, 3))
 
     // Get song names separately
     const { data: songs, error: songsError } = await supabase
@@ -66,9 +88,16 @@ export async function GET(request: NextRequest) {
       userReviews.get(email)!.set(songOrder, rating)
     })
 
+    console.log(`Built userReviews map with ${userReviews.size} users`)
+    console.log('Users in map:', Array.from(userReviews.keys()))
+
     // Get user's reviews
+    console.log(`Looking for user: "${userEmail}"`)
+    console.log(`Available users in database:`, Array.from(userReviews.keys()))
+    
     const userRatingsMap = userReviews.get(userEmail)
     if (!userRatingsMap) {
+      console.log(`User "${userEmail}" not found in userReviews map`)
       return Response.json({ error: 'No reviews found for user' }, { status: 404 })
     }
 
