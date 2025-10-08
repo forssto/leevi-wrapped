@@ -187,12 +187,11 @@ export async function GET(request: NextRequest) {
       grade_emoji: gradeEmoji,
       grade_color: gradeColor,
       predictability_score: predictability,
-      total_reviews: userStats.total_reviews,
       user_avg_rating: userStats.user_avg,
       rating_consistency: userStats.rating_stddev,
       prediction_factors: factors,
       insights,
-      report_summary: `Based on ${userStats.total_reviews} reviews, your musical taste is ${gradeDescription.toLowerCase()}.`
+      report_summary: `Your musical taste is ${gradeDescription.toLowerCase()}.`
     })
 
   } catch (error) {

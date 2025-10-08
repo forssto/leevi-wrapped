@@ -121,7 +121,6 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
           </div>
           
           <div className="text-lg text-white/60">
-            {data.decade_ratings.find(d => d.decade === data.best_decade)?.review_count} songs reviewed
           </div>
         </motion.div>
 
@@ -172,7 +171,6 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
                   </div>
                   
                   <div className="text-xs text-white/60">
-                    {decade.review_count} songs
                   </div>
                 </motion.div>
               )

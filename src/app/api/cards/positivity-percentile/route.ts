@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     // Get user's average rating
     const { data: userStats, error: userError } = await supabase
       .from('mv_user_avg')
-      .select('user_avg, total_reviews')
+      .select('user_avg')
       .eq('email', userEmail)
       .single()
 
@@ -97,13 +97,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return Response.json({
-      user_avg: parseFloat(userStats.user_avg),
-      total_reviews: userStats.total_reviews,
-      all_avg: allAvg,
-      all_percentile: percentile,
-      cohort_percentiles: cohortPercentiles
-    })
+        return Response.json({
+          user_avg: parseFloat(userStats.user_avg),
+          all_avg: allAvg,
+          all_percentile: percentile,
+          cohort_percentiles: cohortPercentiles
+        })
 
   } catch (error) {
     console.error('Error in positivity percentile:', error)

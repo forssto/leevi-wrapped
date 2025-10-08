@@ -109,7 +109,6 @@ export async function GET(request: NextRequest) {
       avg_lag_days: avgLag,
       median_lag_days: medianLag,
       reviews_per_day: reviewsPerDay,
-      total_reviews: reviews.length,
       total_days: totalDays,
       hour_distribution: Object.fromEntries(hourCounts),
       day_distribution: Object.fromEntries(dayCounts)

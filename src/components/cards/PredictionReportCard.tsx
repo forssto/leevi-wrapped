@@ -19,7 +19,6 @@ interface PredictionReportData {
   grade_emoji: string
   grade_color: string
   predictability_score: number
-  total_reviews: number
   user_avg_rating: number
   rating_consistency: number
   prediction_factors: PredictionFactor[]
@@ -130,15 +129,6 @@ export default function PredictionReportCard({ userEmail }: PredictionReportCard
             </div>
           </div>
 
-          {/* Total Reviews */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
-              {data.total_reviews}
-            </div>
-            <div className="text-white/80 text-sm">
-              Total Reviews
-            </div>
-          </div>
 
           {/* Rating Consistency */}
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">

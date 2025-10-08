@@ -7,7 +7,6 @@ import CardWrapper from './CardWrapper'
 
 interface PositivityPercentileData {
   user_avg: number
-  total_reviews: number
   all_avg: number
   all_percentile: number
   cohort_percentiles: {
@@ -97,9 +96,6 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           </div>
           <div className="text-2xl text-white/80 mb-2">
             Your Average Rating
-          </div>
-          <div className="text-lg text-white/60">
-            Out of {data.total_reviews} reviews
           </div>
         </motion.div>
 

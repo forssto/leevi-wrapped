@@ -16,7 +16,6 @@ interface CadenceArchetypeData {
   avg_lag_days: number
   median_lag_days: number
   reviews_per_day: number
-  total_reviews: number
   total_days: number
   hour_distribution: Record<number, number>
   day_distribution: Record<number, number>
@@ -187,7 +186,6 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
             <div>
               <h4 className="text-lg font-semibold text-white/90 mb-3">Review Cadence</h4>
               <ul className="space-y-2 text-white/80">
-                <li>• <span className="font-semibold text-white">{data.total_reviews}</span> total reviews</li>
                 <li>• <span className="font-semibold text-white">{data.total_days}</span> active days</li>
                 <li>• <span className="font-semibold text-white">{formatFinnishNumber(data.reviews_per_day, 1)}</span> reviews per day on average</li>
               </ul>
