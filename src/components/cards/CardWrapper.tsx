@@ -12,7 +12,7 @@ export default function CardWrapper({ children, backgroundImage, isLoading, erro
   
   if (isLoading) {
     return (
-      <div className="relative w-full h-full flex flex-col items-center justify-center p-6">
+      <div className="relative w-full min-h-[60vh] flex flex-col items-center justify-center p-6">
         <div className="text-white text-xl">Loading...</div>
       </div>
     )
@@ -20,7 +20,7 @@ export default function CardWrapper({ children, backgroundImage, isLoading, erro
 
   if (error) {
     return (
-      <div className="relative w-full h-full flex flex-col items-center justify-center p-6">
+      <div className="relative w-full min-h-[60vh] flex flex-col items-center justify-center p-6">
         <div className="text-white text-xl text-center">
           <div className="text-red-400 mb-2">Error:</div>
           <div>{error}</div>
@@ -30,7 +30,7 @@ export default function CardWrapper({ children, backgroundImage, isLoading, erro
   }
   
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center p-6">
+    <div className="relative w-full min-h-[60vh] flex flex-col items-center justify-center p-6">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-15 rounded-2xl overflow-hidden"

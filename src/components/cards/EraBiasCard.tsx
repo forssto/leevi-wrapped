@@ -211,17 +211,6 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
             </div>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
-            <div className="text-4xl font-bold text-white mb-2">
-              {data.decade_ratings.length}
-            </div>
-            <div className="text-lg font-semibold text-white mb-2">
-              Decades Covered
-            </div>
-            <div className="text-white/80 text-sm">
-              From {Math.min(...data.decade_ratings.map(d => d.decade))}s to {Math.max(...data.decade_ratings.map(d => d.decade))}s
-            </div>
-          </div>
         </motion.div>
       </div>
     </div>
