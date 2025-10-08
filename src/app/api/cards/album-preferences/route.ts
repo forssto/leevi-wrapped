@@ -28,7 +28,22 @@ export async function GET(request: NextRequest) {
 
     const result = albumData[0]
 
-    // Album cover images are now handled by the imported getAlbumCover function
+    // Get all album rankings for this user
+    const { data: allAlbums, error: allAlbumsError } = await supabase
+      .from('mv_user_album_avg')
+      .select('album, album_avg')
+      .eq('email', userEmail)
+      .order('album_avg', { ascending: false })
+
+    if (allAlbumsError) {
+      console.error('Error getting all albums:', allAlbumsError)
+    }
+
+    const albumRankings = allAlbums?.map(album => ({
+      album: album.album,
+      avg_rating: parseFloat(album.album_avg),
+      cover: getAlbumCover(album.album)
+    })) || []
 
     return Response.json({
       fav_album: result.fav_album,
@@ -38,7 +53,8 @@ export async function GET(request: NextRequest) {
       worst_album: result.worst_album,
       worst_album_user_avg: parseFloat(result.worst_album_user_avg),
       users_who_liked_worst_less: result.users_who_liked_worst_less,
-      worst_album_cover: getAlbumCover(result.worst_album)
+      worst_album_cover: getAlbumCover(result.worst_album),
+      album_rankings: albumRankings
     })
 
   } catch (error) {

@@ -12,10 +12,14 @@ export default function LoginButton() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/dashboard`,
+          skipBrowserRedirect: true
         }
       })
       if (error) throw error
+      
+      // The popup will handle the OAuth flow and close automatically
+      // The auth state change will be detected by the app
     } catch (error) {
       console.error('Error logging in:', error)
     } finally {

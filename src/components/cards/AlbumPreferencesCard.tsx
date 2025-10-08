@@ -15,6 +15,11 @@ interface AlbumPreferencesData {
   worst_album_user_avg: number
   users_who_liked_worst_less: number
   worst_album_cover: string | null
+  album_rankings: Array<{
+    album: string
+    avg_rating: number
+    cover: string
+  }>
 }
 
 interface AlbumPreferencesCardProps {
@@ -183,6 +188,47 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
           </div>
         </motion.div>
+
+        {/* Album Rankings */}
+        {data.album_rankings && data.album_rankings.length > 0 && (
+          <motion.div
+            className="mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Your Album Rankings</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
+              {data.album_rankings.map((album, index) => (
+                <motion.div
+                  key={album.album}
+                  className="bg-white/10 backdrop-blur-lg rounded-xl p-3 text-center"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.9 + (index * 0.05) }}
+                >
+                  <div className="relative w-16 h-16 mx-auto mb-2">
+                    <Image
+                      src={album.cover}
+                      alt={album.album}
+                      fill
+                      className="rounded-lg object-cover"
+                    />
+                  </div>
+                  <div className="text-xs font-semibold text-white mb-1">
+                    #{index + 1}
+                  </div>
+                  <div className="text-xs text-white/80 mb-1 truncate" title={album.album}>
+                    {album.album}
+                  </div>
+                  <div className="text-sm font-bold text-white">
+                    {formatFinnishNumber(album.avg_rating, 1)}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
     </CardWrapper>
   )
 }

@@ -118,8 +118,16 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             {correlationInfo.text} Correlation
           </div>
           
-          <div className="text-lg text-white/70">
+          <div className="text-lg text-white/70 mb-4">
             Based on {data.overlap_count} shared song ratings
+          </div>
+          
+          {/* Correlation Definition */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 max-w-2xl mx-auto mb-8">
+            <div className="text-sm text-white/80">
+              <strong>Correlation coefficient (r):</strong> Measures how closely your ratings match. 
+              Values closer to 1.0 mean you agree more often, while values closer to -1.0 mean you often disagree.
+            </div>
           </div>
         </motion.div>
 
@@ -169,12 +177,73 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           </motion.div>
         )}
 
+        {/* Visual Chart */}
+        <motion.div
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          <h3 className="text-2xl font-bold text-white mb-6">Rating Comparison Chart</h3>
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-4xl mx-auto">
+            <div className="relative h-80 w-full">
+              {/* Chart Grid */}
+              <div className="absolute inset-0">
+                {/* Grid lines */}
+                {[4, 5, 6, 7, 8, 9, 10].map((rating) => (
+                  <div key={rating} className="absolute w-full h-px bg-white/20" style={{ top: `${((10 - rating) / 6) * 100}%` }} />
+                ))}
+                {[4, 5, 6, 7, 8, 9, 10].map((rating) => (
+                  <div key={rating} className="absolute h-full w-px bg-white/20" style={{ left: `${((rating - 4) / 6) * 100}%` }} />
+                ))}
+                
+                {/* Data points */}
+                {data.aligned_hot_takes.slice(0, 20).map((take, index) => {
+                  const x = ((take.user_rating - 4) / 6) * 100
+                  const y = ((10 - take.twin_rating) / 6) * 100
+                  return (
+                    <motion.div
+                      key={index}
+                      className="absolute w-3 h-3 bg-blue-400 rounded-full border-2 border-white"
+                      style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.8 + (index * 0.02) }}
+                    />
+                  )
+                })}
+                
+                {/* Perfect correlation line */}
+                <div className="absolute w-full h-px bg-green-400/50" style={{ top: '50%', transform: 'translateY(-50%)' }} />
+              </div>
+              
+              {/* Axis labels */}
+              <div className="absolute -bottom-8 left-0 right-0 text-center text-white/70 text-sm">
+                Your Ratings
+              </div>
+              <div className="absolute -left-12 top-1/2 transform -translate-y-1/2 -rotate-90 text-center text-white/70 text-sm">
+                Twin Ratings
+              </div>
+              
+              {/* Scale labels */}
+              <div className="absolute -bottom-6 left-0 text-white/60 text-xs">4</div>
+              <div className="absolute -bottom-6 right-0 text-white/60 text-xs">10</div>
+              <div className="absolute -left-8 top-0 text-white/60 text-xs">10</div>
+              <div className="absolute -left-8 bottom-0 text-white/60 text-xs">4</div>
+            </div>
+            
+            <div className="mt-4 text-center text-white/70 text-sm">
+              Each dot represents a song. Dots closer to the diagonal line show better agreement.
+            </div>
+          </div>
+        </motion.div>
+
         {/* Bottom Stats */}
         <motion.div 
           className="grid grid-cols-2 gap-6 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
         >
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
             <div className="text-4xl font-bold text-white mb-2">

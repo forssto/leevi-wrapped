@@ -59,7 +59,29 @@ export async function GET(request: NextRequest) {
     const totalDays = uniqueDates.size
     const reviewsPerDay = reviews.length / Math.max(totalDays, 1)
 
-    // 5. Determine archetype based on patterns
+    // 5. Review streak analysis (20+ songs in 3 hours)
+    const sortedReviews = reviews.sort((a, b) => new Date(a.review_time).getTime() - new Date(b.review_time).getTime())
+    let streaks = 0
+    let currentStreakStart = 0
+    
+    for (let i = 0; i < sortedReviews.length; i++) {
+      const currentTime = new Date(sortedReviews[i].review_time).getTime()
+      const streakStartTime = new Date(sortedReviews[currentStreakStart].review_time).getTime()
+      const timeDiffHours = (currentTime - streakStartTime) / (1000 * 60 * 60)
+      
+      if (timeDiffHours <= 3) {
+        // Still within 3-hour window
+        if (i - currentStreakStart + 1 >= 20) {
+          // Found a streak of 20+ songs
+          streaks++
+        }
+      } else {
+        // Outside 3-hour window, reset streak
+        currentStreakStart = i
+      }
+    }
+
+    // 6. Determine archetype based on patterns
     let archetype = 'Balanced Reviewer'
     let archetypeDescription = 'You review songs at a steady pace'
     let archetypeEmoji = '⚖️'
@@ -82,7 +104,7 @@ export async function GET(request: NextRequest) {
       archetypeEmoji = '🤔'
     }
 
-    // 6. Time preference analysis
+    // 7. Time preference analysis
     let timePreference = 'Balanced'
     if (mostActiveHour >= 6 && mostActiveHour < 12) {
       timePreference = 'Morning Person'
@@ -94,7 +116,7 @@ export async function GET(request: NextRequest) {
       timePreference = 'Night Owl'
     }
 
-    // 7. Day preference analysis
+    // 8. Day preference analysis
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const dayPreference = dayNames[mostActiveDay]
 
@@ -110,6 +132,7 @@ export async function GET(request: NextRequest) {
       median_lag_days: medianLag,
       reviews_per_day: reviewsPerDay,
       total_days: totalDays,
+      review_streaks: streaks,
       hour_distribution: Object.fromEntries(hourCounts),
       day_distribution: Object.fromEntries(dayCounts)
     })
