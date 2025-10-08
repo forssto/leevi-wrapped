@@ -8,6 +8,7 @@ import TasteTwinCard from '../cards/TasteTwinCard'
 import HotTakeIndexCard from '../cards/HotTakeIndexCard'
 import EraBiasCard from '../cards/EraBiasCard'
 import CadenceArchetypeCard from '../cards/CadenceArchetypeCard'
+import ThemeAffinitiesCard from '../cards/ThemeAffinitiesCard'
 import { motion } from 'framer-motion'
 
 interface DashboardProps {
@@ -44,6 +45,10 @@ export default function Dashboard({ user }: DashboardProps) {
     {
       title: "Cadence Archetype",
       content: <CadenceArchetypeCard userEmail={userEmail} />
+    },
+    {
+      title: "Theme Affinities",
+      content: <ThemeAffinitiesCard userEmail={userEmail} />
     }
   ]
 
