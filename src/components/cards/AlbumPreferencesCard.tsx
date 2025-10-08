@@ -175,7 +175,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
               {formatFinnishNumber((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0), 2)}
             </div>
             <div className="text-white/80">
-              Rating Difference
+              Rating Difference between your favorite and least favorite album
             </div>
           </div>
         </motion.div>
