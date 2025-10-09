@@ -34,7 +34,9 @@ CREATE OR REPLACE FUNCTION get_cohort_percentile(
     cohort_type text,
     cohort_value text
 )
-RETURNS TABLE(percentile numeric, cohort_size bigint) AS $$
+RETURNS TABLE(percentile numeric, cohort_size bigint) 
+SECURITY DEFINER
+AS $$
 BEGIN
     RETURN QUERY
     WITH user_rating AS (
@@ -58,7 +60,7 @@ BEGIN
     )
     SELECT 
         CASE 
-            WHEN COUNT(cr.*) >= 5 THEN
+            WHEN COUNT(cr.*) >= 3 THEN
                 (COUNT(*) FILTER (WHERE cr.user_avg <= ur.user_avg) * 100.0 / COUNT(*))::numeric(5,2)
             ELSE NULL
         END as percentile,
@@ -271,7 +273,9 @@ RETURNS TABLE(
     user_percentile_for_predicted numeric,
     crowd_avg_of_predicted numeric,
     crowd_rank_of_predicted bigint
-) AS $$
+) 
+SECURITY DEFINER
+AS $$
 BEGIN
     RETURN QUERY
     WITH user_prediction AS (

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 
 // Calculate Pearson correlation coefficient
 function calculatePearsonCorrelation(userRatings: number[], twinRatings: number[]): number {
@@ -206,15 +206,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Get twin's actual name from participants table
-    const { data: twinParticipant, error: twinError } = await supabase
+    const { data: twinParticipant, error: twinError } = await supabaseAdmin
       .from('participants')
       .select('name')
       .eq('email', bestTwin.email)
       .single()
-    
-    console.log('Twin participant data:', twinParticipant, 'Error:', twinError)
-    console.log('Twin participant name field:', twinParticipant?.name)
-    console.log('Is name empty?', !twinParticipant?.name)
     
     // Better name handling - if name is empty or just whitespace, use a more descriptive fallback
     let twinName = twinParticipant?.name?.trim()

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get cohort percentiles (only for cohorts with enough members)
-    const { data: cohortStats, error: cohortError } = await supabase
+    const { data: cohortStats, error: cohortError } = await supabaseAdmin
       .from('participants')
       .select('gender, decade, city, works_in_music, plays_music')
       .eq('email', userEmail)
@@ -68,9 +68,13 @@ export async function GET(request: NextRequest) {
     
     console.log('Cohort stats:', cohortStats, 'Error:', cohortError)
     
+    if (cohortError) {
+      console.error('Failed to get cohort stats:', cohortError)
+    }
+    
     if (cohortStats && !cohortError) {
       // Get gender percentile
-      const { data: genderPercentile, error: genderError } = await supabase
+      const { data: genderPercentile, error: genderError } = await supabaseAdmin
         .rpc('get_cohort_percentile', { 
           user_email: userEmail, 
           cohort_type: 'gender',
@@ -78,29 +82,42 @@ export async function GET(request: NextRequest) {
         })
       
       console.log('Gender percentile:', genderPercentile, 'Error:', genderError)
+      if (genderError) {
+        console.error('Gender percentile error:', genderError)
+      }
       
       // Get decade percentile
-      const { data: decadePercentile } = await supabase
+      const { data: decadePercentile, error: decadeError } = await supabaseAdmin
         .rpc('get_cohort_percentile', { 
           user_email: userEmail, 
           cohort_type: 'decade',
           cohort_value: cohortStats.decade
         })
+      
+      console.log('Decade percentile:', decadePercentile, 'Error:', decadeError)
+      if (decadeError) {
+        console.error('Decade percentile error:', decadeError)
+      }
 
       // Get city percentile
-      const { data: cityPercentile } = await supabase
+      const { data: cityPercentile, error: cityError } = await supabaseAdmin
         .rpc('get_cohort_percentile', { 
           user_email: userEmail, 
           cohort_type: 'city',
           cohort_value: cohortStats.city
         })
+      
+      console.log('City percentile:', cityPercentile, 'Error:', cityError)
+      if (cityError) {
+        console.error('City percentile error:', cityError)
+      }
 
       // Get musician comparisons
       let worksInMusicPercentile = null
       let playsMusicPercentile = null
       
       if (cohortStats.works_in_music) {
-        const { data: worksInMusicData } = await supabase
+        const { data: worksInMusicData } = await supabaseAdmin
           .rpc('get_cohort_percentile', { 
             user_email: userEmail, 
             cohort_type: 'works_in_music',
@@ -110,7 +127,7 @@ export async function GET(request: NextRequest) {
       }
       
       if (cohortStats.plays_music) {
-        const { data: playsMusicData } = await supabase
+        const { data: playsMusicData } = await supabaseAdmin
           .rpc('get_cohort_percentile', { 
             user_email: userEmail, 
             cohort_type: 'plays_music',
@@ -127,14 +144,27 @@ export async function GET(request: NextRequest) {
         plays_music: playsMusicPercentile
       }
       
+      // Filter out null values
+      cohortPercentiles = Object.fromEntries(
+        Object.entries(cohortPercentiles).filter(([key, value]) => value !== null)
+      )
+      
       console.log('Final cohort percentiles:', cohortPercentiles)
+      console.log('Cohort stats used:', {
+        gender: cohortStats.gender,
+        decade: cohortStats.decade,
+        city: cohortStats.city,
+        works_in_music: cohortStats.works_in_music,
+        plays_music: cohortStats.plays_music
+      })
     }
 
         return Response.json({
           user_avg: parseFloat(userStats.user_avg),
           all_avg: allAvg,
           all_percentile: percentile,
-          cohort_percentiles: cohortPercentiles
+          cohort_percentiles: cohortPercentiles,
+          cohort_stats: cohortStats || null
         })
 
   } catch (error) {
