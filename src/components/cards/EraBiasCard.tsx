@@ -93,7 +93,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <div className="text-3xl font-bold text-white mb-4">
-          Your Favorite Era
+          Sinun suosikki-aikakausi
         </div>
         
         <div className="text-6xl font-bold text-yellow-400 mb-4">
@@ -101,7 +101,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         </div>
         
         <div className="text-2xl text-white/80 mb-2">
-          Average Rating: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.best_decade)!.avg_rating, 2) : '0,00'}
+          Keskiarvo: {data.decade_ratings.find(d => d.decade === data.best_decade)?.avg_rating ? formatFinnishNumber(data.decade_ratings.find(d => d.decade === data.best_decade)!.avg_rating, 2) : '0,00'}
         </div>
       </motion.div>
 
@@ -113,7 +113,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         transition={{ duration: 0.8, delay: 0.4 }}
       >
         <h3 className="text-2xl font-bold text-white mb-6">
-          Your Rating Timeline
+          Sinun arvostelu-aikajana
         </h3>
         
         <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
@@ -217,7 +217,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
               </div>
               
               <div className="text-sm text-white/60">
-                {decade.review_count} songs
+                {decade.review_count} kappaletta
               </div>
             </motion.div>
           )

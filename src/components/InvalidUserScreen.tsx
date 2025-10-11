@@ -52,7 +52,10 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
           </p>
           
           <p className="text-white/70 text-base">
-            Vain osallistujat, jotka suorittivat kaikki kappale-arvioinnit, voivat käyttää henkilökohtaista Leevi Wrapped -kokemustaan.
+            Vain osallistujat, jotka suorittivat kaikki arviot, voivat nauttia henkilökohtaisesta Leevi Wrapped -kokemuksesta.
+          </p>
+          <p className="text-white/70 text-base">
+            Jos tässä meni jotain väärin, ota yhteyttä: <a href="mailto:tommi.forsstrom@gmail.com" className="text-white/70 hover:text-yellow-300 transition-colors">tommi.forsstrom@gmail.com</a>
           </p>
         </motion.div>
         

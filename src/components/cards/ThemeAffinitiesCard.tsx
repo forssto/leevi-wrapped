@@ -119,7 +119,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h3 className="text-2xl font-bold text-green-400 mb-6">💚 Your Theme Loves</h3>
+              <h3 className="text-2xl font-bold text-green-400 mb-6">💚 Sinun teema-rakkautesi</h3>
               <div className="space-y-4">
                 {data.top_affinities.map((theme, index) => (
                   <div key={index} className="flex items-center justify-between">
@@ -150,7 +150,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <h3 className="text-2xl font-bold text-red-400 mb-6">💔 Your Theme Aversions</h3>
+              <h3 className="text-2xl font-bold text-red-400 mb-6">💔 Sinun teema-vastenmielisyytesi</h3>
               <div className="space-y-4">
                 {data.top_aversions.map((theme, index) => (
                   <div key={index} className="flex items-center justify-between">
@@ -181,7 +181,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <h3 className="text-2xl font-semibold text-white mb-6">All Theme Correlations</h3>
+          <h3 className="text-2xl font-semibold text-white mb-6">Kaikki teema-korrelaatiot</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {data.all_themes.map((theme, index) => (
               <div key={index} className="text-center">

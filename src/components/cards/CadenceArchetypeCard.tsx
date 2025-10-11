@@ -127,7 +127,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {formatHour(data.most_active_hour)}
             </div>
             <div className="text-white/80 text-sm mb-1">
-              Most Active Time
+              Eniten aktiivinen aika
             </div>
             <div className={`text-sm font-semibold ${getTimePreferenceColor(data.time_preference)}`}>
               {data.time_preference}
@@ -140,7 +140,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {data.day_preference}
             </div>
             <div className="text-white/80 text-sm">
-              Favorite Day
+              Suosikki-päivä
             </div>
           </div>
 
@@ -150,7 +150,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {formatFinnishNumber(data.avg_lag_days, 1)}
             </div>
             <div className="text-white/80 text-sm">
-              Avg Days to Review
+              Keskim. päiviä arviointiin
             </div>
           </div>
 
@@ -160,7 +160,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {formatFinnishNumber(data.reviews_per_day, 1)}
             </div>
             <div className="text-white/80 text-sm">
-              Reviews per Day
+              Arvostelua päivässä
             </div>
           </div>
         </motion.div>
@@ -172,24 +172,24 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold text-white mb-6">Your Review Pattern</h3>
+          <h3 className="text-2xl font-semibold text-white mb-6">Sinun arvostelu-kuvio</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="text-lg font-semibold text-white/90 mb-3">Timing Insights</h4>
+              <h4 className="text-lg font-semibold text-white/90 mb-3">Aikataulu-oivallukset</h4>
               <ul className="space-y-2 text-white/80">
-                <li>• You&apos;re most active at <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
-                <li>• Your favorite day is <span className="font-semibold text-white">{data.day_preference}</span></li>
-                <li>• You typically wait <span className="font-semibold text-white">{formatFinnishNumber(data.avg_lag_days, 1)} days</span> before reviewing</li>
+                <li>• Olet eniten aktiivinen klo <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
+                <li>• Suosikki-päiväsi on <span className="font-semibold text-white">{data.day_preference}</span></li>
+                <li>• Odotat tyypillisesti <span className="font-semibold text-white">{formatFinnishNumber(data.avg_lag_days, 1)} päivää</span> ennen arviointia</li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold text-white/90 mb-3">Review Cadence</h4>
+              <h4 className="text-lg font-semibold text-white/90 mb-3">Arvostelu-rytmi</h4>
               <ul className="space-y-2 text-white/80">
-                <li>• <span className="font-semibold text-white">{data.total_days}</span> active days</li>
-                <li>• <span className="font-semibold text-white">{formatFinnishNumber(data.reviews_per_day, 1)}</span> reviews per day on average</li>
-                <li>• <span className="font-semibold text-white">{data.review_streaks}</span> review streaks (20+ songs in 3 hours)</li>
+                <li>• <span className="font-semibold text-white">{data.total_days}</span> aktiivista päivää</li>
+                <li>• <span className="font-semibold text-white">{formatFinnishNumber(data.reviews_per_day, 1)}</span> arvostelua päivässä keskimäärin</li>
+                <li>• <span className="font-semibold text-white">{data.review_streaks}</span> arvosteluputkea (20+ kappaletta 3 tunnissa)</li>
               </ul>
             </div>
           </div>
