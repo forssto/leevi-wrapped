@@ -37,7 +37,7 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
           transition={{ delay: 0.3 }}
           className="text-4xl font-bold text-white mb-6"
         >
-          Account Not Found
+          Tiliä ei löytynyt
         </motion.h1>
         
         {/* Error Message */}
@@ -48,11 +48,11 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
           className="bg-white/5 border border-white/20 rounded-2xl p-8 mb-8"
         >
           <p className="text-white/90 text-lg mb-4">
-            The Google account <span className="font-semibold text-yellow-300">{userEmail}</span> didn&apos;t complete the Leevi review project.
+            Google-tili <span className="font-semibold text-yellow-300">{userEmail}</span> ei suorittanut Leevi-arviointiprojektia loppuun.
           </p>
           
           <p className="text-white/70 text-base">
-            Only participants who completed all the song reviews can access their personalized Leevi Wrapped.
+            Vain osallistujat, jotka suorittivat kaikki kappale-arvioinnit, voivat käyttää henkilökohtaista Leevi Wrapped -kokemustaan.
           </p>
         </motion.div>
         
@@ -67,7 +67,7 @@ export default function InvalidUserScreen({ userEmail }: InvalidUserScreenProps)
             onClick={() => window.location.href = '/'}
             className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
           >
-            Back to Home
+            Takaisin etusivulle
           </button>
           
           <LogoutButton />

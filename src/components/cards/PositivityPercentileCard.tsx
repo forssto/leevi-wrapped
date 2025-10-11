@@ -57,15 +57,15 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
   }
 
   const getPercentileText = (percentile: number) => {
-    if (percentile >= 90) return "Top 10% most positive"
-    if (percentile >= 80) return "Top 20% most positive"
-    if (percentile >= 70) return "Top 30% most positive"
-    if (percentile >= 60) return "Above average positivity"
-    if (percentile >= 40) return "Average positivity"
-    if (percentile >= 30) return "Below average positivity"
-    if (percentile >= 20) return "Bottom 30% positivity"
-    if (percentile >= 10) return "Bottom 20% positivity"
-    return "Bottom 10% positivity"
+    if (percentile >= 90) return "Top 10% positiivisimmat"
+    if (percentile >= 80) return "Top 20% positiivisimmat"
+    if (percentile >= 70) return "Top 30% positiivisimmat"
+    if (percentile >= 60) return "Keskimääräistä positiivisempi"
+    if (percentile >= 40) return "Keskimääräinen positiivisuus"
+    if (percentile >= 30) return "Keskimääräistä negatiivisempi"
+    if (percentile >= 20) return "Alin 30% positiivisuus"
+    if (percentile >= 10) return "Alin 20% positiivisuus"
+    return "Alin 10% positiivisuus"
   }
 
   const getPercentileColor = (percentile: number) => {
@@ -97,7 +97,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
             {data.user_avg ? formatFinnishNumber(data.user_avg, 2) : '0,00'}
           </div>
           <div className="text-2xl text-white/80 mb-2">
-            Your Average Rating
+            Sinun keskiarvosi
           </div>
         </motion.div>
 
@@ -123,7 +123,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
               {data.all_avg ? formatFinnishNumber(data.all_avg, 2) : '0,00'}
             </div>
             <div className="text-white/80">
-              Overall Average
+              Kokonaiskeskiarvo
             </div>
           </div>
           
@@ -132,7 +132,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
               {data.all_percentile ? formatFinnishNumber(data.all_percentile, 0) : '0'}%
             </div>
             <div className="text-white/80">
-              Percentile Rank
+              Prosenttiarvo
             </div>
           </div>
         </motion.div>
@@ -147,31 +147,31 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           >
             {data.cohort_percentiles.gender && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Same Gender: </span>
+                <span className="text-white/80 text-sm">Sama sukupuoli: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.gender ? formatFinnishNumber(data.cohort_percentiles.gender, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.decade && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Same Decade: </span>
+                <span className="text-white/80 text-sm">Sama vuosikymmen: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.decade ? formatFinnishNumber(data.cohort_percentiles.decade, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.city && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Same City: </span>
+                <span className="text-white/80 text-sm">Sama kaupunki: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.city ? formatFinnishNumber(data.cohort_percentiles.city, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.works_in_music && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Music Workers: </span>
+                <span className="text-white/80 text-sm">Musiikkialan työntekijät: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.works_in_music ? formatFinnishNumber(data.cohort_percentiles.works_in_music, 0) : '0'}%</span>
               </div>
             )}
             {data.cohort_percentiles.plays_music && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
-                <span className="text-white/80 text-sm">Musicians: </span>
+                <span className="text-white/80 text-sm">Muusikot: </span>
                 <span className="text-white font-semibold">{data.cohort_percentiles.plays_music ? formatFinnishNumber(data.cohort_percentiles.plays_music, 0) : '0'}%</span>
               </div>
             )}

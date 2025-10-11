@@ -30,7 +30,7 @@ export default function LoginButton() {
       disabled={loading}
       className="bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50"
     >
-      {loading ? 'Signing in...' : 'Sign in with Google'}
+      {loading ? 'Kirjaudutaan...' : 'Kirjaudu Googlella'}
     </button>
   )
 }

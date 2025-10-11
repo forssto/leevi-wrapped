@@ -24,7 +24,7 @@ export default function LogoutButton() {
       disabled={loading}
       className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
     >
-      {loading ? 'Signing out...' : 'Sign out'}
+      {loading ? 'Kirjaudutaan ulos...' : 'Kirjaudu ulos'}
     </button>
   )
 }

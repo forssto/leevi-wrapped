@@ -13,7 +13,7 @@ export default function ThankYouCard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Thank You! 🙏
+        Kiitos! 🙏
       </motion.h1>
 
       {/* Main Message */}
@@ -24,13 +24,13 @@ export default function ThankYouCard() {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <div className="text-4xl font-bold text-white mb-8">
-          Thank you for participating in the Leevi review project!
+          Kiitos osallistumisesta Leevi-arviointiprojektiin!
         </div>
         
         <div className="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
-          Your detailed reviews and insights have helped create this unique musical analysis. 
-          We hope you enjoyed discovering your personal Leevi Wrapped and learning about your 
-          musical taste patterns.
+          Yksityiskohtaiset arviointisi ja näkemyksesi ovat auttaneet luomaan tämän ainutlaatuisen musiikkianalyysin. 
+          Toivomme, että nautit henkilökohtaisen Leevi Wrapped -kokemuksesi löytämisestä ja oppimisesta 
+          musiikkimakusi kuvioista.
         </div>
       </motion.div>
 
@@ -43,17 +43,17 @@ export default function ThankYouCard() {
       >
         <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
           <div className="text-4xl font-bold text-white mb-2">206</div>
-          <div className="text-white/80">Songs Reviewed</div>
+          <div className="text-white/80">Arvioitu kappaletta</div>
         </div>
         
         <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
           <div className="text-4xl font-bold text-white mb-2">8</div>
-          <div className="text-white/80">Insight Cards</div>
+          <div className="text-white/80">Oivalluskorttia</div>
         </div>
         
         <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
           <div className="text-4xl font-bold text-white mb-2">1</div>
-          <div className="text-white/80">Unique Musical Profile</div>
+          <div className="text-white/80">Ainutlaatuinen musiikkiprofiili</div>
         </div>
       </motion.div>
 
@@ -65,7 +65,7 @@ export default function ThankYouCard() {
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         <div className="text-lg text-white/70">
-          Keep listening, keep discovering, and keep sharing your musical passion! 🎵
+          Jatka kuuntelemista, löytämistä ja musiikkiharrastuksesi jakamista! 🎵
         </div>
       </motion.div>
     </CardWrapper>

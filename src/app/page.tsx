@@ -47,7 +47,7 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="text-white text-xl">Ladataan...</div>
       </div>
     )
   }
@@ -70,7 +70,7 @@ export default function HomePage() {
           Leevi Wrapped
         </h1>
         <p className="text-xl text-white/70 mb-8 max-w-md mx-auto">
-          Discover your personal Leevi journey. See your reviews, ratings, and musical insights in a beautiful, shareable format.
+          Löydä henkilökohtainen Leevi-matkasi. Katso arviointisi, arvostelusi ja musiikkioivalluksesi kauniissa, jaettavassa muodossa.
         </p>
         <LoginButton />
       </div>

@@ -24,35 +24,35 @@ export default function Dashboard({ user }: DashboardProps) {
 
   const slides = [
     {
-      title: "Positivity Percentile",
+      title: "Positiivisuusprosentti",
       content: <PositivityPercentileCard userEmail={userEmail} />
     },
     {
-      title: "Album Superfan & Nemesis",
+      title: "Albumi-fani & Vihollinen",
       content: <AlbumPreferencesCard userEmail={userEmail} />
     },
     {
-      title: "Taste Twin Found!",
+      title: "Maku-kaksonen löytyi!",
       content: <TasteTwinCard userEmail={userEmail} />
     },
     {
-      title: "Hot Take Index",
+      title: "Hot Take -indeksi",
       content: <HotTakeIndexCard userEmail={userEmail} />
     },
     {
-      title: "Era Bias",
+      title: "Aikakausi-vinouma",
       content: <EraBiasCard userEmail={userEmail} />
     },
     {
-      title: "Cadence Archetype",
+      title: "Arviointityyli",
       content: <CadenceArchetypeCard userEmail={userEmail} />
     },
     {
-      title: "Theme Affinities",
+      title: "Teema-mieltymykset",
       content: <ThemeAffinitiesCard userEmail={userEmail} />
     },
     {
-      title: "Thank You",
+      title: "Kiitos!",
       content: <ThankYouCard />
     },
   ]
@@ -81,7 +81,7 @@ export default function Dashboard({ user }: DashboardProps) {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                Your Leevi Wrapped
+                Sinun Leevi Wrapped
               </motion.h1>
         
         <div className="flex items-center gap-4">
