@@ -40,9 +40,45 @@ export async function GET(request: NextRequest) {
       console.error('Error getting all albums:', allAlbumsError)
     }
 
+    // Get crowd averages for all albums by calculating them directly
+    const { data: crowdAlbums, error: crowdAlbumsError } = await supabase
+      .from('reviews')
+      .select(`
+        rating,
+        songs!inner(album)
+      `)
+      .not('songs.album', 'is', null)
+      .neq('songs.album', 'Single')
+
+    if (crowdAlbumsError) {
+      console.error('Error getting crowd album averages:', crowdAlbumsError)
+    }
+
+    // Calculate crowd averages for each album
+    const crowdAvgMap = new Map()
+    if (crowdAlbums) {
+      const albumRatings = new Map()
+      
+      // Group ratings by album
+      crowdAlbums.forEach(review => {
+        const album = (review.songs as unknown as { album: string }).album
+        if (!albumRatings.has(album)) {
+          albumRatings.set(album, [])
+        }
+        albumRatings.get(album).push(review.rating)
+      })
+      
+      // Calculate averages
+      albumRatings.forEach((ratings, album) => {
+        const avg = ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length
+        crowdAvgMap.set(album, avg)
+      })
+    }
+
     const albumRankings = allAlbums?.map(album => ({
       album: album.album,
       avg_rating: parseFloat(album.album_avg),
+      crowd_avg: crowdAvgMap.get(album.album) || 0,
       cover: getAlbumCover(album.album)
     })) || []
 

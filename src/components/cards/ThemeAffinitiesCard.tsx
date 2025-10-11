@@ -12,6 +12,12 @@ interface ThemeAffinity {
   description: string
   abs_correlation: number
   strength: string
+  rating_difference?: number
+  high_theme_avg?: number
+  low_theme_avg?: number
+  high_theme_count?: number
+  low_theme_count?: number
+  is_relative_aversion?: boolean
 }
 
 interface ThemeAffinitiesData {
@@ -22,8 +28,8 @@ interface ThemeAffinitiesData {
   top_affinities: ThemeAffinity[]
   top_aversions: ThemeAffinity[]
   all_themes: ThemeAffinity[]
-  avg_positive_correlation: number
-  avg_negative_correlation: number
+  avg_positive_difference: number
+  avg_negative_difference: number
 }
 
 interface ThemeAffinitiesCardProps {
@@ -41,6 +47,8 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
         if (response.ok) {
           const result = await response.json()
           console.log('Theme Affinities API response:', result)
+          console.log('Top affinities length:', result.top_affinities?.length)
+          console.log('Top aversions length:', result.top_aversions?.length)
           setData(result)
         } else {
           console.error('Theme Affinities API response not ok:', response.status, response.statusText)
@@ -64,20 +72,12 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
     )
   }
 
-  const getPersonalityColor = (personality: string) => {
-    switch (personality) {
-      case 'Theme Enthusiast': return 'text-yellow-400'
-      case 'Theme Avoider': return 'text-red-400'
-      case 'Open-Minded Listener': return 'text-green-400'
-      default: return 'text-gray-400'
-    }
-  }
 
   const getCorrelationColor = (correlation: number) => {
-    if (correlation > 0.3) return 'text-green-400'
-    if (correlation > 0.1) return 'text-green-300'
-    if (correlation > -0.1) return 'text-gray-400'
-    if (correlation > -0.3) return 'text-red-300'
+    if (correlation > 0.1) return 'text-green-400'
+    if (correlation > 0.05) return 'text-green-300'
+    if (correlation > -0.05) return 'text-gray-400'
+    if (correlation > -0.1) return 'text-red-300'
     return 'text-red-400'
   }
 
@@ -91,10 +91,10 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Theme Affinities {data.personality_emoji}
+          Mikä naidessa naurattaa? {data.personality_emoji}
         </motion.h1>
 
-        {/* Theme Personality */}
+        {/* Theme Personality
         <motion.div
           className="mb-12"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -108,6 +108,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
             {data.personality_description}
           </div>
         </motion.div>
+        */}
 
         {/* Top Affinities and Aversions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -119,7 +120,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h3 className="text-2xl font-bold text-green-400 mb-6">💚 Sinun teema-rakkautesi</h3>
+              <h3 className="text-2xl font-bold text-green-400 mb-6">💚 Suosikkiteemasi</h3>
               <div className="space-y-4">
                 {data.top_affinities.map((theme, index) => (
                   <div key={index} className="flex items-center justify-between">
@@ -150,7 +151,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <h3 className="text-2xl font-bold text-red-400 mb-6">💔 Sinun teema-vastenmielisyytesi</h3>
+              <h3 className="text-2xl font-bold text-red-400 mb-6">💔 Inhokkiteemasi</h3>
               <div className="space-y-4">
                 {data.top_aversions.map((theme, index) => (
                   <div key={index} className="flex items-center justify-between">
@@ -190,7 +191,7 @@ export default function ThemeAffinitiesCard({ userEmail }: ThemeAffinitiesCardPr
                 <div className={`text-lg font-bold ${getCorrelationColor(theme.correlation)}`}>
                   {formatFinnishNumber(theme.correlation, 2)}
                 </div>
-                <div className="text-white/60 text-xs">{theme.strength}</div>
+                {/* <div className="text-white/60 text-xs">{theme.strength}</div> */}
               </div>
             ))}
           </div>

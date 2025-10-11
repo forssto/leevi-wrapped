@@ -163,10 +163,18 @@ export async function GET(request: NextRequest) {
     const usersBelow = allHTIs.filter(hti => hti < hotTakeIndex).length
     const rankPercentile = (usersBelow / allHTIs.length) * 100
 
+    // Calculate songs within 0.25 of popular opinion
+    const songsWithin025 = userReviews.filter(review => {
+      const crowdAvg = crowdAverages.get(review.song_order)
+      if (!crowdAvg) return false
+      return Math.abs(review.rating - crowdAvg) <= 0.25
+    }).length
+
     return Response.json({
       hot_take_index: hotTakeIndex,
       rank_percentile: rankPercentile,
-      top_hot_takes: topHotTakes
+      top_hot_takes: topHotTakes,
+      songs_within_025: songsWithin025
     })
 
   } catch (error) {

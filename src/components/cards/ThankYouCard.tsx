@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import CardWrapper from './CardWrapper'
 
 export default function ThankYouCard() {
@@ -23,51 +24,37 @@ export default function ThankYouCard() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <div className="text-4xl font-bold text-white mb-8">
-          Kiitos osallistumisesta Leevi-arviointiprojektiin!
+        <div className="text-2xl font-bold text-white mb-8">
+          Vielä kerran iso kiitos osallistumisestasi Leevi-projektiin.
         </div>
-        
-        <div className="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
-          Yksityiskohtaiset arviointisi ja näkemyksesi ovat auttaneet luomaan tämän ainutlaatuisen musiikkianalyysin. 
-          Toivomme, että nautit henkilökohtaisen Leevi Wrapped -kokemuksesi löytämisestä ja oppimisesta 
-          musiikkimakusi kuvioista.
+        <div className="text-sm text-white mb-8">
+          <em>&ldquo;Kun kyyneleet i ögonen, kertovat om projekten -- Minns du sommarn tjugofem?&rdquo;</em>
+        </div>
+        <div className="text-sm text-white mb-8">
+          <em>Ja me toivotamme <br />
+          Ikävää, synkkää<br />
+          Kylmää, pimeää<br />
+          Ja oikein surullista joulua!</em>
         </div>
       </motion.div>
 
-      {/* Final Stats */}
+      {/* Image */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+        className="flex justify-center mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
-          <div className="text-4xl font-bold text-white mb-2">206</div>
-          <div className="text-white/80">Arvioitu kappaletta</div>
-        </div>
-        
-        <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
-          <div className="text-4xl font-bold text-white mb-2">8</div>
-          <div className="text-white/80">Oivalluskorttia</div>
-        </div>
-        
-        <div className="bg-white/5 border border-white/20 rounded-2xl p-6 text-center">
-          <div className="text-4xl font-bold text-white mb-2">1</div>
-          <div className="text-white/80">Ainutlaatuinen musiikkiprofiili</div>
-        </div>
+        <Image
+          src="/kuvia/leevijuttu_soundi.fi__0.jpg"
+          alt="Leevi-projekti"
+          width={320}
+          height={240}
+          className="rounded-2xl"
+        />
       </motion.div>
 
-      {/* Closing Message */}
-      <motion.div
-        className="mt-12 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-      >
-        <div className="text-lg text-white/70">
-          Jatka kuuntelemista, löytämistä ja musiikkiharrastuksesi jakamista! 🎵
-        </div>
-      </motion.div>
+
     </CardWrapper>
   )
 }

@@ -95,38 +95,38 @@ export async function GET(request: NextRequest) {
     }
 
     // 6. Determine archetype based on patterns
-    let archetype = 'Tasapainottu arvioija'
+    let archetype = 'Tasainen arvioija'
     let archetypeDescription = 'Arvioit kappaleita tasaisella tahdilla'
     let archetypeEmoji = '⚖️'
 
     if (avgLag < 1) {
-      archetype = 'Aamuvirkku'
+      archetype = 'Eka!'
       archetypeDescription = 'Arvioit kappaleita melkein heti julkaisun jälkeen'
       archetypeEmoji = '🐦'
     } else if (avgLag > 30) {
-      archetype = 'Myöhäinen kukkija'
-      archetypeDescription = 'Otat aikaa kappaleiden sulattamiseen ennen arviointia'
+      archetype = 'Pohtija'
+      archetypeDescription = 'Et kiirehdi arvioimaan kappaleita'
       archetypeEmoji = '🌱'
     } else if (reviewsPerDay > 5) {
-      archetype = 'Maraton-arvioija'
-      archetypeDescription = 'Arvioit monta kappaletta keskittyneissä istunnoissa'
+      archetype = 'Rykäisijä'
+      archetypeDescription = 'Tykittelet rästejä isoissa ryppäissä'
       archetypeEmoji = '🎯'
-    } else if (reviewsPerDay < 1) {
-      archetype = 'Ajatteleva arvioija'
-      archetypeDescription = 'Otat aikaa arvostelujen välillä pohdintaan'
+    } else if (reviewsPerDay < 1.5) {
+      archetype = 'Teuvo'
+      archetypeDescription = 'Arvostelet pienissä istunnoissa'
       archetypeEmoji = '🤔'
     }
 
     // 7. Time preference analysis
-    let timePreference = 'Tasapainottu'
+    let timePreference = 'Tuhlaajapoika'
     if (mostActiveHour >= 6 && mostActiveHour < 12) {
-      timePreference = 'Aamuihminen'
+      timePreference = 'Heti aamusta timmi'
     } else if (mostActiveHour >= 12 && mostActiveHour < 18) {
-      timePreference = 'Iltapäivä-innokas'
+      timePreference = 'Sisälläni päivä on pidempi kuin yö'
     } else if (mostActiveHour >= 18 && mostActiveHour < 22) {
-      timePreference = 'Ilta-kuuntelija'
+      timePreference = 'Ilta keskikaupungilla'
     } else {
-      timePreference = 'Yökyöpel'
+      timePreference = 'Yön tuoksut'
     }
 
     // 8. Day preference analysis

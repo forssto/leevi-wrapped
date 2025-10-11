@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
       
       // Filter out null values
       cohortPercentiles = Object.fromEntries(
-        Object.entries(cohortPercentiles).filter(([key, value]) => value !== null)
+        Object.entries(cohortPercentiles).filter(([, value]) => value !== null)
       )
       
       console.log('Final cohort percentiles:', cohortPercentiles)

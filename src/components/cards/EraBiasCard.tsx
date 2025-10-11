@@ -65,7 +65,16 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
   }
 
   const getDecadeName = (decade: number) => {
-    return `${decade}s`
+    const decadeStr = decade.toString()
+    if (decadeStr.length === 4) {
+      // Handle full years like 1970, 1980, etc.
+      const lastTwoDigits = decadeStr.slice(-2)
+      return `${lastTwoDigits}-luku`
+    } else if (decadeStr.length === 2) {
+      // Handle abbreviated years like 70, 80, etc.
+      return `${decadeStr}-luku`
+    }
+    return `${decade}s` // fallback
   }
 
 
@@ -82,7 +91,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Era Bias 📅
+        Lukiossa vuonna &apos;69 📅
       </motion.h1>
 
       {/* Best Decade */}
@@ -93,7 +102,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <div className="text-3xl font-bold text-white mb-4">
-          Sinun suosikki-aikakausi
+          Suosikki-aikakautesi
         </div>
         
         <div className="text-6xl font-bold text-yellow-400 mb-4">
@@ -113,7 +122,7 @@ export default function EraBiasCard({ userEmail }: EraBiasCardProps) {
         transition={{ duration: 0.8, delay: 0.4 }}
       >
         <h3 className="text-2xl font-bold text-white mb-6">
-          Sinun arvostelu-aikajana
+          Arviosi julkaisuvuoden mukaan
         </h3>
         
         <div className="bg-white/5 border border-white/20 rounded-2xl p-6">

@@ -29,43 +29,43 @@ export async function GET(request: NextRequest) {
     // Define theme categories with their correlations
     const themes = [
       {
-        name: 'Seksuaaliset teemat',
+        name: 'Seksuaalisuus',
         correlation: themeData.corr_sexual,
         emoji: '💋',
         description: 'Kappaleita romanttisella tai seksuaalisella sisällöllä'
       },
       {
-        name: 'PG-13 sisältö',
+        name: 'K-18 sisältö',
         correlation: themeData.corr_pg13,
         emoji: '🔞',
         description: 'Kappaleita kypsällä mutta ei eksplisiittisellä sisällöllä'
       },
       {
-        name: 'Traagiset tarinat',
+        name: 'Traagisuus',
         correlation: themeData.corr_tragic,
         emoji: '😢',
         description: 'Kappaleita surullisilla tai traagisilla tarinoilla'
       },
       {
-        name: 'Pako todellisuudesta',
+        name: 'Eskapismi ja nostalgia',
         correlation: themeData.corr_escapism,
         emoji: '🌌',
         description: 'Kappaleita todellisuudesta pakenemisesta tai fantasiasta'
       },
       {
-        name: 'Anti-sankari teemat',
+        name: 'Antisankari',
         correlation: themeData.corr_antihero,
         emoji: '🦹',
         description: 'Kappaleita moraalisesti monimutkaisilla päähenkilöillä'
       },
       {
-        name: 'LGBT teemat',
+        name: 'Sukupuolivähemmistöt',
         correlation: themeData.corr_lgbt,
         emoji: '🏳️‍🌈',
         description: 'Kappaleita LGBTQ+ teemoilla tai sisällöllä'
       },
       {
-        name: 'Päihteiden käyttö',
+        name: 'Päihteiteet',
         correlation: themeData.corr_substance,
         emoji: '🍷',
         description: 'Kappaleita huumeista, alkoholista tai riippuvuudesta'
@@ -91,7 +91,9 @@ export async function GET(request: NextRequest) {
     // Calculate theme preferences based on how much the user's ratings differ from their average
     // when that theme is present vs absent. This gives us true loves/aversions.
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let topAffinities: any[] = []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let topAversions: any[] = []
     
     // Get user's reviews with theme data to calculate actual rating differences
@@ -120,8 +122,8 @@ export async function GET(request: NextRequest) {
         if (!themeKey) return { ...theme, rating_difference: 0 }
         
         // Calculate average rating when theme is high (2-3) vs low (1)
-        const highThemeSongs = userReviews.filter(r => r.songs[themeKey] >= 2)
-        const lowThemeSongs = userReviews.filter(r => r.songs[themeKey] === 1)
+        const highThemeSongs = userReviews.filter(r => (r.songs as unknown as Record<string, number>)[themeKey] >= 2)
+        const lowThemeSongs = userReviews.filter(r => (r.songs as unknown as Record<string, number>)[themeKey] === 1)
         
         const highThemeAvg = highThemeSongs.length > 0 
           ? highThemeSongs.reduce((sum, r) => sum + r.rating, 0) / highThemeSongs.length 
@@ -142,24 +144,21 @@ export async function GET(request: NextRequest) {
         }
       }).filter(theme => theme.rating_difference !== 0)
       
-      // Sort by absolute rating difference (strongest preferences first)
-      const sortedByDifference = themeDifferences.sort((a, b) => 
-        Math.abs(b.rating_difference) - Math.abs(a.rating_difference)
-      )
-      
-      // Get top 3 loves (positive rating differences)
-      topAffinities = sortedByDifference
+      // Get top 3 loves (positive rating differences) - sorted by highest first
+      topAffinities = themeDifferences
         .filter(theme => theme.rating_difference > 0)
+        .sort((a, b) => b.rating_difference - a.rating_difference)
         .slice(0, 3)
       
-      // Get top 3 aversions (negative rating differences)
-      topAversions = sortedByDifference
+      // Get top 3 aversions (negative rating differences) - sorted by most negative first
+      topAversions = themeDifferences
         .filter(theme => theme.rating_difference < 0)
+        .sort((a, b) => a.rating_difference - b.rating_difference)
         .slice(0, 3)
       
       // If no true aversions found, use the weakest positive preferences as "relative aversions"
       if (topAversions.length === 0) {
-        const allPositiveThemes = sortedByDifference.filter(theme => theme.rating_difference > 0)
+        const allPositiveThemes = themeDifferences.filter(theme => theme.rating_difference > 0)
         topAversions = allPositiveThemes
           .sort((a, b) => a.rating_difference - b.rating_difference) // Sort by weakest first
           .slice(0, 3)
@@ -220,23 +219,23 @@ export async function GET(request: NextRequest) {
 
 function getCorrelationStrength(correlation: number): string {
   const abs = Math.abs(correlation)
-  if (abs >= 0.7) return 'Very Strong'
-  if (abs >= 0.5) return 'Strong'
-  if (abs >= 0.3) return 'Moderate'
-  if (abs >= 0.1) return 'Weak'
-  return 'Very Weak'
+  if (abs >= 0.2) return 'Todella vahva'
+  if (abs >= 0.15) return 'Vahva'
+  if (abs >= 0.1) return 'Keskimääräinen'
+  if (abs >= 0.5) return 'Heikko'
+  return 'Todella heikko'
 }
 
 function getThemeKey(themeName: string): string | null {
   const themeMap: { [key: string]: string } = {
-    'Sexual Themes': 'sexual_themes',
-    'PG-13 Content': 'pg13',
-    'Tragic Stories': 'tragic_story',
-    'Escapism': 'escapism',
-    'Antihero Themes': 'antihero',
-    'LGBT Themes': 'lgbt',
-    'Substance Abuse': 'substance_abuse',
-    'Song Length': 'song_length'
+    'Seksuaalisuus': 'sexual_themes',
+    'K-18 sisältö': 'pg13',
+    'Traagisuus': 'tragic_story',
+    'Eskapismi ja nostalgia': 'escapism',
+    'Antisankari': 'antihero',
+    'Sukupuolivähemmistöt': 'lgbt',
+    'Päihteiteet': 'substance_abuse',
+    'Kappaleen pituus': 'song_length'
   }
   return themeMap[themeName] || null
 }

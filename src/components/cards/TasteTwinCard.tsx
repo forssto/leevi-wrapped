@@ -66,11 +66,11 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
 
   const getCorrelationStrength = (r: number) => {
     const absR = Math.abs(r)
-    if (absR >= 0.8) return { text: 'Very Strong', color: 'text-green-400' }
-    if (absR >= 0.6) return { text: 'Strong', color: 'text-green-300' }
-    if (absR >= 0.4) return { text: 'Moderate', color: 'text-yellow-400' }
-    if (absR >= 0.2) return { text: 'Weak', color: 'text-orange-400' }
-    return { text: 'Very Weak', color: 'text-red-400' }
+    if (absR >= 0.8) return { text: 'Erittäin vahva', color: 'text-green-400' }
+    if (absR >= 0.6) return { text: 'Vahva', color: 'text-green-300' }
+    if (absR >= 0.4) return { text: 'Välttävä', color: 'text-yellow-400' }
+    if (absR >= 0.2) return { text: 'Heikko', color: 'text-orange-400' }
+    return { text: 'Erittäin heikko', color: 'text-red-400' }
   }
 
   const correlationInfo = getCorrelationStrength(data.pearson_r)
@@ -93,9 +93,8 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Taste Twin Found! 🎯
+          Tuntematon ystävä
         </motion.h1>
-
         {/* Main Twin Info */}
         <motion.div 
           className="mb-12"
@@ -103,28 +102,25 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="text-4xl font-bold text-white mb-4">
-            {data.twin_name}
-          </div>
-          <div className="text-xl text-white/80 mb-6">
-            Sinun musiikillinen sielunkumppanisi
+          <div className="text-4xl text-white mb-4">
+            Mä näen unia <span className="text-green-400 font-extrabold">{data.twin_name}</span>:sta vieläkin
           </div>
           
           <div className="text-6xl font-bold text-blue-400 mb-4">
             r = {data.pearson_r.toFixed(3)}
           </div>
           
-          <div className={`text-2xl font-semibold mb-4 ${correlationInfo.color}`}>
-            {correlationInfo.text} Korrelaatio
+          <div className={`text-2xl font-semibold mb-4 text-white/70`}>
+            <span className={`${correlationInfo.color}`}>{correlationInfo.text} korrelaatio</span>&emdash;perustuu {data.overlap_count} jaettuun kappale-arvosteluun
           </div>
           
           <div className="text-lg text-white/70 mb-4">
-            Perustuu {data.overlap_count} jaettuun kappale-arvosteluun
+            
           </div>
           
               {/* Correlation Definition */}
               <div className="bg-white/5 border border-white/20 rounded-xl p-4 max-w-2xl mx-auto mb-8">
-                <div className="text-sm text-white/80">
+                <div className="text-xs text-white/80">
                   <strong>Korrelaatiokerroin (r):</strong> Mittaa kuinka läheisesti arvostelusi vastaavat toisiaan. 
                   Arvot lähempänä 1,0 tarkoittavat että olette useammin samaa mieltä, kun taas arvot lähempänä -1,0 tarkoittavat että erolette usein.
                 </div>
@@ -140,7 +136,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <h3 className="text-2xl font-bold text-white mb-6">
-              Sinun yhteneväiset Hot Take -mielipiteet 🔥
+              <em>&ldquo;Kukaan kuitenkaan ei ymmärrä / mitä koettu on yhdessä&rdquo;</em>
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
@@ -193,10 +189,10 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                       Sinä: <span className="font-semibold text-yellow-300">{formatRating(hotTake.user_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Kaksonen: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
+                      Ystävä: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Yleinen: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 2)}</span>
+                      Raati: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 2)}</span>
                     </div>
                   </div>
                   
@@ -222,10 +218,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
               {data.aligned_hot_takes.length}
             </div>
             <div className="text-white/80">
-              Yhteneväisiä Hot Take -mielipiteitä
-            </div>
-            <div className="text-white/60 text-xs mt-1">
-              Kappaleita joissa sinä ja kaksonesi eroitte yleisestä mielipiteestä
+              Yhteneväisiä joukosta eriäviä mielipiteitä
             </div>
           </div>
         </motion.div>

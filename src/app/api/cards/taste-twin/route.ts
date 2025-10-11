@@ -206,7 +206,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get twin's actual name from participants table
-    const { data: twinParticipant, error: twinError } = await supabaseAdmin
+    const { data: twinParticipant } = await supabaseAdmin
       .from('participants')
       .select('name')
       .eq('email', bestTwin.email)

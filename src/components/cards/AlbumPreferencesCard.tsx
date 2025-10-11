@@ -18,6 +18,7 @@ interface AlbumPreferencesData {
   album_rankings: Array<{
     album: string
     avg_rating: number
+    crowd_avg: number
     cover: string
   }>
 }
@@ -70,14 +71,19 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
   return (
     <CardWrapper>
         {/* Title */}
-        <motion.h1 
-          className="text-5xl font-bold text-white mb-12"
+        <motion.div
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Album Superfan & Nemesis
-        </motion.h1>
+          <h1 className="text-5xl font-bold text-white mb-2">
+            Suru ja Onni
+          </h1>
+          <h2 className="text-2xl text-white/70">
+            suosikki- ja inhokkilevyt
+          </h2>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Favorite Album */}
@@ -87,7 +93,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="text-2xl font-bold text-green-400 mb-6">🎵 Albumi-fani</div>
+            <div className="text-2xl font-bold text-green-400 mb-6">😍 Suosikki</div>
             
             {/* Album Cover */}
             {data.fav_album_cover && (
@@ -116,7 +122,10 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             
             <div className="bg-green-500/20 rounded-full px-4 py-2 inline-block">
               <span className="text-green-300 font-semibold">
-                {data.users_who_liked_fav_more} ihmistä rakasti sitä vielä enemmän
+                {data.users_who_liked_fav_more === 1 
+                  ? '1 ihminen rakasti sitä vielä enemmän'
+                  : `${data.users_who_liked_fav_more} ihmistä rakasti sitä vielä enemmän`
+                }
               </span>
             </div>
           </motion.div>
@@ -128,7 +137,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="text-2xl font-bold text-red-400 mb-6">😤 Albumi-vihollinen</div>
+            <div className="text-2xl font-bold text-red-400 mb-6">😤 Inhokki</div>
             
             {/* Album Cover */}
             {data.worst_album_cover && (
@@ -157,7 +166,10 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             
             <div className="bg-red-500/20 rounded-full px-4 py-2 inline-block">
               <span className="text-red-300 font-semibold">
-                {data.users_who_liked_worst_less} ihmistä piti siitä vielä vähemmän
+                {data.users_who_liked_worst_less === 1 
+                  ? '1 ihminen piti siitä vielä vähemmän'
+                  : `${data.users_who_liked_worst_less} ihmistä piti siitä vielä vähemmän`
+                }
               </span>
             </div>
           </motion.div>
@@ -175,7 +187,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
               {formatFinnishNumber((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0), 2)}
             </div>
             <div className="text-white/80">
-              Arvosteluerotus suosikki- ja vähiten suosikki-albumisi välillä
+              Arvioiden ero suosikki- ja inhokkialbumisi välillä
             </div>
           </div>
         </motion.div>
@@ -188,7 +200,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Sinun albumi-sijoitukset</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Kaikki albumit</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
               {data.album_rankings.map((album, index) => (
                 <motion.div
@@ -212,8 +224,17 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
                   <div className="text-xs text-white/80 mb-1 truncate" title={album.album}>
                     {album.album}
                   </div>
-                  <div className="text-sm font-bold text-white">
+                  <div className={`text-sm font-bold mb-1 ${
+                    album.avg_rating > album.crowd_avg 
+                      ? 'text-green-400' 
+                      : album.avg_rating < album.crowd_avg 
+                        ? 'text-red-400' 
+                        : 'text-white'
+                  }`}>
                     {formatFinnishNumber(album.avg_rating, 2)}
+                  </div>
+                  <div className="text-xs text-white/60">
+                    Raati: {formatFinnishNumber(album.crowd_avg, 2)}
                   </div>
                 </motion.div>
               ))}

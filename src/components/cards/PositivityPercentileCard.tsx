@@ -57,15 +57,15 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
   }
 
   const getPercentileText = (percentile: number) => {
-    if (percentile >= 90) return "Top 10% positiivisimmat"
-    if (percentile >= 80) return "Top 20% positiivisimmat"
-    if (percentile >= 70) return "Top 30% positiivisimmat"
-    if (percentile >= 60) return "Keskimääräistä positiivisempi"
-    if (percentile >= 40) return "Keskimääräinen positiivisuus"
-    if (percentile >= 30) return "Keskimääräistä negatiivisempi"
-    if (percentile >= 20) return "Alin 30% positiivisuus"
-    if (percentile >= 10) return "Alin 20% positiivisuus"
-    return "Alin 10% positiivisuus"
+    if (percentile >= 90) return "Top 10% positiivisimpien joukossa!"
+    if (percentile >= 80) return "Top 20% positiivisimpien joukossa!"
+    if (percentile >= 70) return "Top 30% positiivisimpien joukossa!"
+    if (percentile >= 60) return "Hieman keskimääräistä positiivisempi"
+    if (percentile >= 40) return "Keskitien kulkija"
+    if (percentile >= 30) return "Hieman keskimääräistä negatiivisempi"
+    if (percentile >= 20) return "Negatiivisimmassa 30%:ssa"
+    if (percentile >= 10) return "Negatiivisimmassa 20%:ssa"
+    return "Negatiivisimmassa 10%:ssa"
   }
 
   const getPercentileColor = (percentile: number) => {

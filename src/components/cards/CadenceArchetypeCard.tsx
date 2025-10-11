@@ -69,20 +69,20 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
 
   const getTimePreferenceColor = (preference: string) => {
     switch (preference) {
-      case 'Morning Person': return 'text-yellow-400'
-      case 'Afternoon Enthusiast': return 'text-orange-400'
-      case 'Evening Listener': return 'text-purple-400'
-      case 'Night Owl': return 'text-blue-400'
+      case 'Heti aamusta timmi': return 'text-yellow-400'
+      case 'Sisälläni päivä on pidempi kuin yö': return 'text-orange-400'
+      case 'Ilta keskikaupungilla': return 'text-purple-400'
+      case 'Yön tuoksut': return 'text-blue-400'
       default: return 'text-gray-400'
     }
   }
 
   const getArchetypeColor = (archetype: string) => {
     switch (archetype) {
-      case 'Early Bird': return 'text-yellow-400'
-      case 'Late Bloomer': return 'text-green-400'
-      case 'Binge Reviewer': return 'text-red-400'
-      case 'Thoughtful Reviewer': return 'text-blue-400'
+      case 'Eka!': return 'text-yellow-400'
+      case 'Pohtija': return 'text-green-400'
+      case 'Rykäisijä': return 'text-red-400'
+      case 'Teuvo': return 'text-blue-400'
       default: return 'text-gray-400'
     }
   }
@@ -90,14 +90,21 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
   return (
     <CardWrapper>
         {/* Title */}
-        <motion.h1 
-          className="text-6xl font-bold text-white mb-8"
+        <motion.div
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Cadence Archetype {data.archetype_emoji}
-        </motion.h1>
+          <h1 className="text-5xl font-bold text-white mb-2">
+          Arvioaktiivisuus {data.archetype_emoji}
+          </h1>
+          <h2 className="text-2xl text-white/70">
+          <em>Muistan jokaisen illan, jokaisen aamun, jokaisen päivän, ja jokaisen yön</em>
+          </h2>
+        </motion.div>
+
+
 
         {/* Main Archetype */}
         <motion.div
@@ -127,7 +134,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {formatHour(data.most_active_hour)}
             </div>
             <div className="text-white/80 text-sm mb-1">
-              Eniten aktiivinen aika
+              Yleisin arvioajankohtasi
             </div>
             <div className={`text-sm font-semibold ${getTimePreferenceColor(data.time_preference)}`}>
               {data.time_preference}
@@ -140,7 +147,7 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
               {data.day_preference}
             </div>
             <div className="text-white/80 text-sm">
-              Suosikki-päivä
+              Yleisin arviopäiväsi
             </div>
           </div>
 
@@ -172,20 +179,20 @@ export default function CadenceArchetypeCard({ userEmail }: CadenceArchetypeCard
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold text-white mb-6">Sinun arvostelu-kuvio</h3>
+          <h3 className="text-2xl font-semibold text-white mb-6">Arvosteluaktiivisuutesi</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="text-lg font-semibold text-white/90 mb-3">Aikataulu-oivallukset</h4>
+              <h4 className="text-lg font-semibold text-white/90 mb-3">Arvosteluajankohdat</h4>
               <ul className="space-y-2 text-white/80">
-                <li>• Olet eniten aktiivinen klo <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
-                <li>• Suosikki-päiväsi on <span className="font-semibold text-white">{data.day_preference}</span></li>
+                <li>• Arvioit useimmin klo <span className="font-semibold text-white">{formatHour(data.most_active_hour)}</span></li>
+                <li>• Päivä oli yleensä <span className="font-semibold text-white">{data.day_preference}</span></li>
                 <li>• Odotat tyypillisesti <span className="font-semibold text-white">{formatFinnishNumber(data.avg_lag_days, 1)} päivää</span> ennen arviointia</li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold text-white/90 mb-3">Arvostelu-rytmi</h4>
+              <h4 className="text-lg font-semibold text-white/90 mb-3">Arvostelurytmisi</h4>
               <ul className="space-y-2 text-white/80">
                 <li>• <span className="font-semibold text-white">{data.total_days}</span> aktiivista päivää</li>
                 <li>• <span className="font-semibold text-white">{formatFinnishNumber(data.reviews_per_day, 1)}</span> arvostelua päivässä keskimäärin</li>

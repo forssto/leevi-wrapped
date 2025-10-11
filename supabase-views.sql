@@ -133,6 +133,25 @@ GRANT SELECT ON mv_user_era_stats TO anon, authenticated;
 GRANT SELECT ON mv_user_popularity_stats TO anon, authenticated;
 GRANT SELECT ON v_cohort_sizes TO anon, authenticated;
 
+-- Overall album averages (crowd averages for albums)
+DROP MATERIALIZED VIEW IF EXISTS mv_crowd_album_avg;
+CREATE MATERIALIZED VIEW mv_crowd_album_avg AS
+SELECT 
+    s.album,
+    AVG(r.rating)::numeric(5,2) as crowd_avg,
+    COUNT(r.rating) as review_count
+FROM reviews r
+JOIN songs s ON r.song_order = s.song_order
+WHERE s.album IS NOT NULL 
+  AND s.album != 'Single'
+GROUP BY s.album
+ORDER BY crowd_avg DESC;
+
+CREATE INDEX IF NOT EXISTS idx_mv_crowd_album_avg_album ON mv_crowd_album_avg(album);
+
+-- Grant permissions
+GRANT SELECT ON mv_crowd_album_avg TO anon, authenticated;
+
 -- Refresh function for materialized views
 CREATE OR REPLACE FUNCTION refresh_wrapped_views()
 RETURNS void AS $$
@@ -140,6 +159,7 @@ BEGIN
     REFRESH MATERIALIZED VIEW mv_crowd_song_avg;
     REFRESH MATERIALIZED VIEW mv_crowd_song_rank;
     REFRESH MATERIALIZED VIEW mv_user_album_avg;
+    REFRESH MATERIALIZED VIEW mv_crowd_album_avg;
     REFRESH MATERIALIZED VIEW mv_user_avg;
     REFRESH MATERIALIZED VIEW mv_user_review_timing;
     REFRESH MATERIALIZED VIEW mv_user_theme_stats;

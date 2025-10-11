@@ -22,7 +22,7 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+      className="text-white/60 hover:text-white text-sm underline transition-colors disabled:opacity-50"
     >
       {loading ? 'Kirjaudutaan ulos...' : 'Kirjaudu ulos'}
     </button>
