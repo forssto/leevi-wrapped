@@ -83,7 +83,7 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Positivity Percentile
+          Elämää!
         </motion.h1>
 
         {/* Main Stats */}
@@ -129,10 +129,10 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
           
           <div className="bg-white/5 border border-white/20 rounded-2xl p-6">
             <div className="text-3xl font-bold text-white mb-2">
-              {data.all_percentile ? formatFinnishNumber(data.all_percentile, 0) : '0'}%
+              {data.all_percentile ? formatFinnishNumber(100 - data.all_percentile, 0) : '0'}%
             </div>
             <div className="text-white/80">
-              Prosenttiarvo
+              on sinua positiivisempia
             </div>
           </div>
         </motion.div>
@@ -148,31 +148,31 @@ export default function PositivityPercentileCard({ userEmail }: PositivityPercen
             {data.cohort_percentiles.gender && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Sama sukupuoli: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.gender ? formatFinnishNumber(data.cohort_percentiles.gender, 0) : '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.gender ? formatFinnishNumber(100 - data.cohort_percentiles.gender, 0) : '0'}% positiivisempia</span>
               </div>
             )}
             {data.cohort_percentiles.decade && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Sama vuosikymmen: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.decade ? formatFinnishNumber(data.cohort_percentiles.decade, 0) : '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.decade ? formatFinnishNumber(100 - data.cohort_percentiles.decade, 0) : '0'}% positiivisempia</span>
               </div>
             )}
             {data.cohort_percentiles.city && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Sama kaupunki: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.city ? formatFinnishNumber(data.cohort_percentiles.city, 0) : '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.city ? formatFinnishNumber(100 - data.cohort_percentiles.city, 0) : '0'}% positiivisempia</span>
               </div>
             )}
             {data.cohort_percentiles.works_in_music && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Musiikkialan työntekijät: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.works_in_music ? formatFinnishNumber(data.cohort_percentiles.works_in_music, 0) : '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.works_in_music ? formatFinnishNumber(100 - data.cohort_percentiles.works_in_music, 0) : '0'}% positiivisempia</span>
               </div>
             )}
             {data.cohort_percentiles.plays_music && (
               <div className="bg-white/5 border border-white/20 rounded-full px-4 py-2">
                 <span className="text-white/80 text-sm">Muusikot: </span>
-                <span className="text-white font-semibold">{data.cohort_percentiles.plays_music ? formatFinnishNumber(data.cohort_percentiles.plays_music, 0) : '0'}%</span>
+                <span className="text-white font-semibold">{data.cohort_percentiles.plays_music ? formatFinnishNumber(100 - data.cohort_percentiles.plays_music, 0) : '0'}% positiivisempia</span>
               </div>
             )}
           </motion.div>
