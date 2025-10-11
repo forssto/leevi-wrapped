@@ -88,44 +88,107 @@ export async function GET(request: NextRequest) {
       }))
       .sort((a, b) => b.abs_correlation - a.abs_correlation)
 
-    // Calculate relative thresholds based on user's correlation distribution
-    const correlations = validThemes.map(theme => theme.correlation)
-    const avgCorrelation = correlations.reduce((sum, corr) => sum + corr, 0) / correlations.length
-    const stdDev = Math.sqrt(correlations.reduce((sum, corr) => sum + Math.pow(corr - avgCorrelation, 2), 0) / correlations.length)
+    // Calculate theme preferences based on how much the user's ratings differ from their average
+    // when that theme is present vs absent. This gives us true loves/aversions.
     
-    // Use relative thresholds: above average + 0.5*stdDev for loves, below average - 0.5*stdDev for aversions
-    const loveThreshold = avgCorrelation + (0.5 * stdDev)
-    const aversionThreshold = avgCorrelation - (0.5 * stdDev)
+    let topAffinities: any[] = []
+    let topAversions: any[] = []
+    
+    // Get user's reviews with theme data to calculate actual rating differences
+    const { data: userReviews, error: reviewsError } = await supabase
+      .from('reviews')
+      .select(`
+        rating,
+        songs!inner(
+          sexual_themes, pg13, tragic_story, escapism, 
+          antihero, lgbt, substance_abuse, song_length
+        )
+      `)
+      .eq('participant_email', userEmail)
 
-    // Get top 3 strongest affinities (above relative threshold)
-    const topAffinities = validThemes
-      .filter(theme => theme.correlation > loveThreshold)
-      .slice(0, 3)
+    if (reviewsError || !userReviews) {
+      console.error('Error getting user reviews:', reviewsError)
+      // Fallback to correlation-based approach
+      const sortedByStrength = [...validThemes].sort((a, b) => b.abs_correlation - a.abs_correlation)
+      topAffinities = sortedByStrength.filter(theme => theme.correlation > 0).slice(0, 3)
+      topAversions = sortedByStrength.filter(theme => theme.correlation < 0).slice(0, 3)
+    } else {
+      // Calculate actual rating differences for each theme
+      const userAvgRating = themeData.user_avg_rating
+      const themeDifferences = themes.map(theme => {
+        const themeKey = getThemeKey(theme.name)
+        if (!themeKey) return { ...theme, rating_difference: 0 }
+        
+        // Calculate average rating when theme is high (2-3) vs low (1)
+        const highThemeSongs = userReviews.filter(r => r.songs[themeKey] >= 2)
+        const lowThemeSongs = userReviews.filter(r => r.songs[themeKey] === 1)
+        
+        const highThemeAvg = highThemeSongs.length > 0 
+          ? highThemeSongs.reduce((sum, r) => sum + r.rating, 0) / highThemeSongs.length 
+          : userAvgRating
+        const lowThemeAvg = lowThemeSongs.length > 0 
+          ? lowThemeSongs.reduce((sum, r) => sum + r.rating, 0) / lowThemeSongs.length 
+          : userAvgRating
+        
+        const ratingDifference = highThemeAvg - lowThemeAvg
+        
+        return {
+          ...theme,
+          rating_difference: ratingDifference,
+          high_theme_avg: highThemeAvg,
+          low_theme_avg: lowThemeAvg,
+          high_theme_count: highThemeSongs.length,
+          low_theme_count: lowThemeSongs.length
+        }
+      }).filter(theme => theme.rating_difference !== 0)
+      
+      // Sort by absolute rating difference (strongest preferences first)
+      const sortedByDifference = themeDifferences.sort((a, b) => 
+        Math.abs(b.rating_difference) - Math.abs(a.rating_difference)
+      )
+      
+      // Get top 3 loves (positive rating differences)
+      topAffinities = sortedByDifference
+        .filter(theme => theme.rating_difference > 0)
+        .slice(0, 3)
+      
+      // Get top 3 aversions (negative rating differences)
+      topAversions = sortedByDifference
+        .filter(theme => theme.rating_difference < 0)
+        .slice(0, 3)
+      
+      // If no true aversions found, use the weakest positive preferences as "relative aversions"
+      if (topAversions.length === 0) {
+        const allPositiveThemes = sortedByDifference.filter(theme => theme.rating_difference > 0)
+        topAversions = allPositiveThemes
+          .sort((a, b) => a.rating_difference - b.rating_difference) // Sort by weakest first
+          .slice(0, 3)
+          .map(theme => ({
+            ...theme,
+            is_relative_aversion: true // Flag to indicate this is a relative aversion
+          }))
+      }
+    }
 
-    // Get top 3 strongest aversions (below relative threshold)
-    const topAversions = validThemes
-      .filter(theme => theme.correlation < aversionThreshold)
-      .slice(0, 3)
-
-    // Determine overall theme personality based on relative thresholds
-    const avgPositiveCorrelation = topAffinities.length > 0 
-      ? topAffinities.reduce((sum, theme) => sum + theme.correlation, 0) / topAffinities.length 
+    // Determine overall theme personality based on rating differences
+    const avgPositiveDifference = topAffinities.length > 0 
+      ? topAffinities.reduce((sum, theme) => sum + (theme.rating_difference || theme.correlation), 0) / topAffinities.length 
       : 0
 
-    const avgNegativeCorrelation = topAversions.length > 0 
-      ? topAversions.reduce((sum, theme) => sum + theme.correlation, 0) / topAversions.length 
+    const avgNegativeDifference = topAversions.length > 0 
+      ? topAversions.reduce((sum, theme) => sum + (theme.rating_difference || theme.correlation), 0) / topAversions.length 
       : 0
 
     let themePersonality = 'Balanced Listener'
     let personalityDescription = 'You appreciate a wide variety of musical themes'
     let personalityEmoji = '⚖️'
 
-    // Use relative thresholds for personality determination
-    if (avgPositiveCorrelation > loveThreshold) {
+    // Use rating differences for personality determination
+    if (avgPositiveDifference > 0.5) {
       themePersonality = 'Theme Enthusiast'
       personalityDescription = 'You have strong preferences for specific themes'
       personalityEmoji = '🎯'
-    } else if (avgNegativeCorrelation < aversionThreshold) {
+    } else if (avgNegativeDifference < -0.5) {
       themePersonality = 'Theme Avoider'
       personalityDescription = 'You tend to avoid certain types of content'
       personalityEmoji = '🚫'
@@ -143,13 +206,10 @@ export async function GET(request: NextRequest) {
       top_affinities: topAffinities,
       top_aversions: topAversions,
       all_themes: validThemes,
-      avg_positive_correlation: avgPositiveCorrelation,
-      avg_negative_correlation: avgNegativeCorrelation,
-      // Debug info for relative thresholds
-      avg_correlation: avgCorrelation,
-      std_dev: stdDev,
-      love_threshold: loveThreshold,
-      aversion_threshold: aversionThreshold
+      avg_positive_difference: avgPositiveDifference,
+      avg_negative_difference: avgNegativeDifference,
+      // Debug info
+      method: reviewsError ? 'correlation_fallback' : 'rating_difference'
     })
 
   } catch (error) {
@@ -165,4 +225,18 @@ function getCorrelationStrength(correlation: number): string {
   if (abs >= 0.3) return 'Moderate'
   if (abs >= 0.1) return 'Weak'
   return 'Very Weak'
+}
+
+function getThemeKey(themeName: string): string | null {
+  const themeMap: { [key: string]: string } = {
+    'Sexual Themes': 'sexual_themes',
+    'PG-13 Content': 'pg13',
+    'Tragic Stories': 'tragic_story',
+    'Escapism': 'escapism',
+    'Antihero Themes': 'antihero',
+    'LGBT Themes': 'lgbt',
+    'Substance Abuse': 'substance_abuse',
+    'Song Length': 'song_length'
+  }
+  return themeMap[themeName] || null
 }
