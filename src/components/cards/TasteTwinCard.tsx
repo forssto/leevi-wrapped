@@ -111,7 +111,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           </div>
           
           <div className={`text-2xl font-semibold mb-4 text-white/70`}>
-            <span className={`${correlationInfo.color}`}>{correlationInfo.text} korrelaatio</span>&emdash;perustuu {data.overlap_count} jaettuun kappale-arvosteluun
+            <span className={`${correlationInfo.color}`}>{correlationInfo.text} korrelaatio</span>&mdash;perustuu {data.overlap_count} jaettuun kappale-arvosteluun
           </div>
           
           <div className="text-lg text-white/70 mb-4">
