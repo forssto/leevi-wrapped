@@ -88,17 +88,26 @@ export async function GET(request: NextRequest) {
       }))
       .sort((a, b) => b.abs_correlation - a.abs_correlation)
 
-    // Get top 3 strongest affinities (positive correlations)
+    // Calculate relative thresholds based on user's correlation distribution
+    const correlations = validThemes.map(theme => theme.correlation)
+    const avgCorrelation = correlations.reduce((sum, corr) => sum + corr, 0) / correlations.length
+    const stdDev = Math.sqrt(correlations.reduce((sum, corr) => sum + Math.pow(corr - avgCorrelation, 2), 0) / correlations.length)
+    
+    // Use relative thresholds: above average + 0.5*stdDev for loves, below average - 0.5*stdDev for aversions
+    const loveThreshold = avgCorrelation + (0.5 * stdDev)
+    const aversionThreshold = avgCorrelation - (0.5 * stdDev)
+
+    // Get top 3 strongest affinities (above relative threshold)
     const topAffinities = validThemes
-      .filter(theme => theme.correlation > 0)
+      .filter(theme => theme.correlation > loveThreshold)
       .slice(0, 3)
 
-    // Get top 3 strongest aversions (negative correlations)
+    // Get top 3 strongest aversions (below relative threshold)
     const topAversions = validThemes
-      .filter(theme => theme.correlation < 0)
+      .filter(theme => theme.correlation < aversionThreshold)
       .slice(0, 3)
 
-    // Determine overall theme personality
+    // Determine overall theme personality based on relative thresholds
     const avgPositiveCorrelation = topAffinities.length > 0 
       ? topAffinities.reduce((sum, theme) => sum + theme.correlation, 0) / topAffinities.length 
       : 0
@@ -111,15 +120,16 @@ export async function GET(request: NextRequest) {
     let personalityDescription = 'You appreciate a wide variety of musical themes'
     let personalityEmoji = '⚖️'
 
-    if (avgPositiveCorrelation > 0.3) {
+    // Use relative thresholds for personality determination
+    if (avgPositiveCorrelation > loveThreshold) {
       themePersonality = 'Theme Enthusiast'
       personalityDescription = 'You have strong preferences for specific themes'
       personalityEmoji = '🎯'
-    } else if (avgNegativeCorrelation < -0.3) {
+    } else if (avgNegativeCorrelation < aversionThreshold) {
       themePersonality = 'Theme Avoider'
       personalityDescription = 'You tend to avoid certain types of content'
       personalityEmoji = '🚫'
-    } else if (Math.abs(avgPositiveCorrelation) < 0.1 && Math.abs(avgNegativeCorrelation) < 0.1) {
+    } else if (topAffinities.length === 0 && topAversions.length === 0) {
       themePersonality = 'Open-Minded Listener'
       personalityDescription = 'You enjoy music regardless of its thematic content'
       personalityEmoji = '🌈'
@@ -134,7 +144,12 @@ export async function GET(request: NextRequest) {
       top_aversions: topAversions,
       all_themes: validThemes,
       avg_positive_correlation: avgPositiveCorrelation,
-      avg_negative_correlation: avgNegativeCorrelation
+      avg_negative_correlation: avgNegativeCorrelation,
+      // Debug info for relative thresholds
+      avg_correlation: avgCorrelation,
+      std_dev: stdDev,
+      love_threshold: loveThreshold,
+      aversion_threshold: aversionThreshold
     })
 
   } catch (error) {
