@@ -29,52 +29,52 @@ export async function GET(request: NextRequest) {
     // Define theme categories with their correlations
     const themes = [
       {
-        name: 'Sexual Themes',
+        name: 'Seksuaaliset teemat',
         correlation: themeData.corr_sexual,
         emoji: '💋',
-        description: 'Songs with romantic or sexual content'
+        description: 'Kappaleita romanttisella tai seksuaalisella sisällöllä'
       },
       {
-        name: 'PG-13 Content',
+        name: 'PG-13 sisältö',
         correlation: themeData.corr_pg13,
         emoji: '🔞',
-        description: 'Songs with mature but not explicit content'
+        description: 'Kappaleita kypsällä mutta ei eksplisiittisellä sisällöllä'
       },
       {
-        name: 'Tragic Stories',
+        name: 'Traagiset tarinat',
         correlation: themeData.corr_tragic,
         emoji: '😢',
-        description: 'Songs with sad or tragic narratives'
+        description: 'Kappaleita surullisilla tai traagisilla tarinoilla'
       },
       {
-        name: 'Escapism',
+        name: 'Pako todellisuudesta',
         correlation: themeData.corr_escapism,
         emoji: '🌌',
-        description: 'Songs about escaping reality or fantasy'
+        description: 'Kappaleita todellisuudesta pakenemisesta tai fantasiasta'
       },
       {
-        name: 'Antihero Themes',
+        name: 'Anti-sankari teemat',
         correlation: themeData.corr_antihero,
         emoji: '🦹',
-        description: 'Songs with morally complex protagonists'
+        description: 'Kappaleita moraalisesti monimutkaisilla päähenkilöillä'
       },
       {
-        name: 'LGBT Themes',
+        name: 'LGBT teemat',
         correlation: themeData.corr_lgbt,
         emoji: '🏳️‍🌈',
-        description: 'Songs with LGBTQ+ themes or content'
+        description: 'Kappaleita LGBTQ+ teemoilla tai sisällöllä'
       },
       {
-        name: 'Substance Abuse',
+        name: 'Päihteiden käyttö',
         correlation: themeData.corr_substance,
         emoji: '🍷',
-        description: 'Songs about drugs, alcohol, or addiction'
+        description: 'Kappaleita huumeista, alkoholista tai riippuvuudesta'
       },
       {
-        name: 'Song Length',
+        name: 'Kappaleen pituus',
         correlation: themeData.corr_length,
         emoji: '⏱️',
-        description: 'Preference for longer or shorter songs'
+        description: 'Mieltymys pidempiin tai lyhyempiin kappaleisiin'
       }
     ]
 
@@ -179,22 +179,22 @@ export async function GET(request: NextRequest) {
       ? topAversions.reduce((sum, theme) => sum + (theme.rating_difference || theme.correlation), 0) / topAversions.length 
       : 0
 
-    let themePersonality = 'Balanced Listener'
-    let personalityDescription = 'You appreciate a wide variety of musical themes'
+    let themePersonality = 'Tasapainottu kuuntelija'
+    let personalityDescription = 'Arvostat laajaa musiikkiteemojen kirjoa'
     let personalityEmoji = '⚖️'
 
     // Use rating differences for personality determination
     if (avgPositiveDifference > 0.5) {
-      themePersonality = 'Theme Enthusiast'
-      personalityDescription = 'You have strong preferences for specific themes'
+      themePersonality = 'Teema-innokas'
+      personalityDescription = 'Sinulla on vahvat mieltymykset tiettyihin teemoihin'
       personalityEmoji = '🎯'
     } else if (avgNegativeDifference < -0.5) {
-      themePersonality = 'Theme Avoider'
-      personalityDescription = 'You tend to avoid certain types of content'
+      themePersonality = 'Teema-välttäjä'
+      personalityDescription = 'Välttäät tiettyjä sisältötyyppejä'
       personalityEmoji = '🚫'
     } else if (topAffinities.length === 0 && topAversions.length === 0) {
-      themePersonality = 'Open-Minded Listener'
-      personalityDescription = 'You enjoy music regardless of its thematic content'
+      themePersonality = 'Avoinmielinen kuuntelija'
+      personalityDescription = 'Nautit musiikista riippumatta sen teemallisesta sisällöstä'
       personalityEmoji = '🌈'
     }
 

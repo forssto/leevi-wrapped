@@ -95,42 +95,42 @@ export async function GET(request: NextRequest) {
     }
 
     // 6. Determine archetype based on patterns
-    let archetype = 'Balanced Reviewer'
-    let archetypeDescription = 'You review songs at a steady pace'
+    let archetype = 'Tasapainottu arvioija'
+    let archetypeDescription = 'Arvioit kappaleita tasaisella tahdilla'
     let archetypeEmoji = '⚖️'
 
     if (avgLag < 1) {
-      archetype = 'Early Bird'
-      archetypeDescription = 'You review songs almost immediately after release'
+      archetype = 'Aamuvirkku'
+      archetypeDescription = 'Arvioit kappaleita melkein heti julkaisun jälkeen'
       archetypeEmoji = '🐦'
     } else if (avgLag > 30) {
-      archetype = 'Late Bloomer'
-      archetypeDescription = 'You take your time to digest songs before reviewing'
+      archetype = 'Myöhäinen kukkija'
+      archetypeDescription = 'Otat aikaa kappaleiden sulattamiseen ennen arviointia'
       archetypeEmoji = '🌱'
     } else if (reviewsPerDay > 5) {
-      archetype = 'Binge Reviewer'
-      archetypeDescription = 'You review many songs in concentrated sessions'
+      archetype = 'Maraton-arvioija'
+      archetypeDescription = 'Arvioit monta kappaletta keskittyneissä istunnoissa'
       archetypeEmoji = '🎯'
     } else if (reviewsPerDay < 1) {
-      archetype = 'Thoughtful Reviewer'
-      archetypeDescription = 'You take time between reviews to reflect'
+      archetype = 'Ajatteleva arvioija'
+      archetypeDescription = 'Otat aikaa arvostelujen välillä pohdintaan'
       archetypeEmoji = '🤔'
     }
 
     // 7. Time preference analysis
-    let timePreference = 'Balanced'
+    let timePreference = 'Tasapainottu'
     if (mostActiveHour >= 6 && mostActiveHour < 12) {
-      timePreference = 'Morning Person'
+      timePreference = 'Aamuihminen'
     } else if (mostActiveHour >= 12 && mostActiveHour < 18) {
-      timePreference = 'Afternoon Enthusiast'
+      timePreference = 'Iltapäivä-innokas'
     } else if (mostActiveHour >= 18 && mostActiveHour < 22) {
-      timePreference = 'Evening Listener'
+      timePreference = 'Ilta-kuuntelija'
     } else {
-      timePreference = 'Night Owl'
+      timePreference = 'Yökyöpel'
     }
 
     // 8. Day preference analysis
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const dayNames = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai']
     const dayPreference = dayNames[mostActiveDay]
 
     return Response.json({

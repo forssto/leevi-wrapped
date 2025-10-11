@@ -70,8 +70,11 @@ export default function HomePage() {
           Leevi Wrapped
         </h1>
         <p className="text-xl text-white/70 mb-8 max-w-md mx-auto">
-          Löydä henkilökohtainen Leevi-matkasi. Katso arviointisi, arvostelusi ja musiikkioivalluksesi kauniissa, jaettavassa muodossa.
+          <em>Vaikka housuille on oksenneltu<br />
+          Ja kainaloista tulvii tuoksu hien</em>
         </p>
+
+        <p className="text-xl text-white/70 mb-8 max-w-md mx-auto">Nyt on aika käydä läpi henkilökohtainen Leevi-matkasi! Elämää on tämäkin.</p>
         <LoginButton />
       </div>
     </div>
