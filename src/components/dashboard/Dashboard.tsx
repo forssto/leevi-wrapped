@@ -24,35 +24,35 @@ export default function Dashboard({ user }: DashboardProps) {
 
   const slides = [
     {
-      title: "Positiivisuusprosentti",
+      title: "Elämää",
       content: <PositivityPercentileCard userEmail={userEmail} />
     },
     {
-      title: "Albumi-fani & Vihollinen",
+      title: "Suru ja onni",
       content: <AlbumPreferencesCard userEmail={userEmail} />
     },
     {
-      title: "Maku-kaksonen löytyi!",
+      title: "Samoissa kengissä",
       content: <TasteTwinCard userEmail={userEmail} />
     },
     {
-      title: "Hot Take -indeksi",
+      title: "Se juttu meni näin",
       content: <HotTakeIndexCard userEmail={userEmail} />
     },
     {
-      title: "Aikakausi-vinouma",
+      title: "Lukiossa vuonna '69",
       content: <EraBiasCard userEmail={userEmail} />
     },
     {
-      title: "Arviointityyli",
+      title: "Se on aina mielessä",
       content: <CadenceArchetypeCard userEmail={userEmail} />
     },
     {
-      title: "Teema-mieltymykset",
+      title: "Mikä naidessa naurattaa?",
       content: <ThemeAffinitiesCard userEmail={userEmail} />
     },
     {
-      title: "Kiitos!",
+      title: "Tehkää hyvin, kiitos syvin!",
       content: <ThankYouCard />
     },
   ]

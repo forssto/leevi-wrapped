@@ -54,7 +54,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
   if (loading) {
     return (
       <div className="w-full h-full bg-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="text-white text-xl">Ladataan...</div>
       </div>
     )
   }
@@ -62,7 +62,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
   if (!data) {
     return (
       <div className="w-full h-full bg-black flex items-center justify-center">
-        <div className="text-white text-xl">No data available</div>
+        <div className="text-white text-xl">Tietoja ei saatavilla</div>
       </div>
     )
   }
@@ -87,7 +87,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="text-2xl font-bold text-green-400 mb-6">🎵 Album Superfan</div>
+            <div className="text-2xl font-bold text-green-400 mb-6">🎵 Albumi-fani</div>
             
             {/* Album Cover */}
             {data.fav_album_cover && (
@@ -111,12 +111,12 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-white/80 mb-4">
-              Your Average Rating
+              Sinun keskiarvosi
             </div>
             
             <div className="bg-green-500/20 rounded-full px-4 py-2 inline-block">
               <span className="text-green-300 font-semibold">
-                {data.users_who_liked_fav_more} people loved it even more
+                {data.users_who_liked_fav_more} ihmistä rakasti sitä vielä enemmän
               </span>
             </div>
           </motion.div>
@@ -128,7 +128,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="text-2xl font-bold text-red-400 mb-6">😤 Album Nemesis</div>
+            <div className="text-2xl font-bold text-red-400 mb-6">😤 Albumi-vihollinen</div>
             
             {/* Album Cover */}
             {data.worst_album_cover && (
@@ -152,12 +152,12 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             </div>
             
             <div className="text-white/80 mb-4">
-              Your Average Rating
+              Sinun keskiarvosi
             </div>
             
             <div className="bg-red-500/20 rounded-full px-4 py-2 inline-block">
               <span className="text-red-300 font-semibold">
-                {data.users_who_liked_worst_less} people liked it even less
+                {data.users_who_liked_worst_less} ihmistä piti siitä vielä vähemmän
               </span>
             </div>
           </motion.div>
@@ -175,7 +175,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
               {formatFinnishNumber((data.fav_album_user_avg || 0) - (data.worst_album_user_avg || 0), 2)}
             </div>
             <div className="text-white/80">
-              Rating Difference between your favorite and least favorite album
+              Arvosteluerotus suosikki- ja vähiten suosikki-albumisi välillä
             </div>
           </div>
         </motion.div>
@@ -188,7 +188,7 @@ export default function AlbumPreferencesCard({ userEmail }: AlbumPreferencesCard
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Your Album Rankings</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Sinun albumi-sijoitukset</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
               {data.album_rankings.map((album, index) => (
                 <motion.div

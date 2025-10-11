@@ -107,7 +107,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             {data.twin_name}
           </div>
           <div className="text-xl text-white/80 mb-6">
-            Your musical soulmate
+            Sinun musiikillinen sielunkumppanisi
           </div>
           
           <div className="text-6xl font-bold text-blue-400 mb-4">
@@ -115,18 +115,18 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
           </div>
           
           <div className={`text-2xl font-semibold mb-4 ${correlationInfo.color}`}>
-            {correlationInfo.text} Correlation
+            {correlationInfo.text} Korrelaatio
           </div>
           
           <div className="text-lg text-white/70 mb-4">
-            Based on {data.overlap_count} shared song ratings
+            Perustuu {data.overlap_count} jaettuun kappale-arvosteluun
           </div>
           
               {/* Correlation Definition */}
               <div className="bg-white/5 border border-white/20 rounded-xl p-4 max-w-2xl mx-auto mb-8">
                 <div className="text-sm text-white/80">
-                  <strong>Correlation coefficient (r):</strong> Measures how closely your ratings match. 
-                  Values closer to 1.0 mean you agree more often, while values closer to -1.0 mean you often disagree.
+                  <strong>Korrelaatiokerroin (r):</strong> Mittaa kuinka läheisesti arvostelusi vastaavat toisiaan. 
+                  Arvot lähempänä 1,0 tarkoittavat että olette useammin samaa mieltä, kun taas arvot lähempänä -1,0 tarkoittavat että erolette usein.
                 </div>
               </div>
         </motion.div>
@@ -140,7 +140,7 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <h3 className="text-2xl font-bold text-white mb-6">
-              Your Aligned Hot Takes 🔥
+              Sinun yhteneväiset Hot Take -mielipiteet 🔥
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
@@ -190,18 +190,18 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
                   
                   <div className="flex justify-between items-center text-sm">
                     <div className="text-white/80">
-                      You: <span className="font-semibold text-yellow-300">{formatRating(hotTake.user_rating, true)}</span>
+                      Sinä: <span className="font-semibold text-yellow-300">{formatRating(hotTake.user_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Twin: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
+                      Kaksonen: <span className="font-semibold text-orange-300">{formatRating(hotTake.twin_rating, true)}</span>
                     </div>
                     <div className="text-white/80">
-                      Popular: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 2)}</span>
+                      Yleinen: <span className="font-semibold text-green-300">{formatFinnishNumber(hotTake.crowd_avg, 2)}</span>
                     </div>
                   </div>
                   
                   <div className="mt-2 text-xs text-white/60">
-                    {hotTake.delta_from_avg > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta_from_avg, 2)} from crowd average
+                    {hotTake.delta_from_avg > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta_from_avg, 2)} yleisestä keskiarvosta
                   </div>
                 </motion.div>
               ))}
@@ -222,10 +222,10 @@ export default function TasteTwinCard({ userEmail }: TasteTwinCardProps) {
               {data.aligned_hot_takes.length}
             </div>
             <div className="text-white/80">
-              Aligned Hot Takes
+              Yhteneväisiä Hot Take -mielipiteitä
             </div>
             <div className="text-white/60 text-xs mt-1">
-              Songs where you and your twin both disagreed with the crowd
+              Kappaleita joissa sinä ja kaksonesi eroitte yleisestä mielipiteestä
             </div>
           </div>
         </motion.div>

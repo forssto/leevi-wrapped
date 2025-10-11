@@ -105,7 +105,7 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
           </div>
           
           <div className="text-lg text-white/70 mb-6">
-            Average disagreement with the crowd
+            Keskimääräinen erimielisyys yleisön kanssa
           </div>
         </motion.div>
 
@@ -118,7 +118,7 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <h3 className="text-2xl font-bold text-white mb-6">
-              Your Biggest Hot Takes 🔥
+              Sinun suurimmat Hot Take -mielipiteet 🔥
             </h3>
             
             <div className="space-y-4 max-w-4xl mx-auto">
@@ -138,13 +138,13 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
                       
                       <div className="flex gap-6 text-sm">
                         <div className="text-white/80">
-                          You: <span className="font-semibold text-blue-300">{formatRating(hotTake.user_rating, true)}</span>
+                          Sinä: <span className="font-semibold text-blue-300">{formatRating(hotTake.user_rating, true)}</span>
                         </div>
                         <div className="text-white/80">
-                          Crowd: <span className="font-semibold text-gray-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
+                          Yleinen: <span className="font-semibold text-gray-300">{formatFinnishNumber(hotTake.crowd_avg, 1)}</span>
                         </div>
                         <div className={`font-semibold ${hotTake.delta > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {hotTake.delta > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta, 1)} difference
+                          {hotTake.delta > 0 ? '+' : ''}{formatFinnishNumber(hotTake.delta, 1)} ero
                         </div>
                       </div>
                     </div>
@@ -176,10 +176,10 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
               {data.rank_percentile.toFixed(0)}%
             </div>
             <div className="text-white/80">
-              Percentile Rank
+              Prosenttiarvo
             </div>
             <div className="text-white/60 text-xs mt-1">
-              How opinionated you are compared to other reviewers
+              Kuinka mielipiteellinen olet verrattuna muihin arvioijiin
             </div>
           </div>
           
@@ -188,10 +188,10 @@ export default function HotTakeIndexCard({ userEmail }: HotTakeIndexCardProps) {
               {data.top_hot_takes.length}
             </div>
             <div className="text-white/80">
-              Top Hot Takes
+              Top Hot Take -mielipiteitä
             </div>
             <div className="text-white/60 text-xs mt-1">
-              Songs you rated most differently from the crowd
+              Kappaleita joita arvostelit eri tavalla kuin yleisö
             </div>
           </div>
         </motion.div>
